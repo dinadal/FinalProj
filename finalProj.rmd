@@ -1,6 +1,6 @@
 ---
-title: "midterm"
-Author: "Dina Dalloul"
+title: "Final Project"
+Author: ""
 date: '`r Sys.Date()`'
 editor_options: 
   chunk_output_type: console
@@ -9,196 +9,90 @@ output:
   html_document: default
 ---
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-# Packages
-
-```{r load-packages, message = FALSE}
-library(tidyverse)
-```
-
-# Data
-
-```{r load-data, message = FALSE}
-incomeData <- read.csv("data/adult.income.csv")
-```
+1. Introduction
+Briefly introduce the research question and its significance. and Problem statement
+Explain the purpose of the analysis: to understand factors influencing student lifestyle and expenses in major Saudi cities.
+Provide a high-level overview of the dataset and the variables you will be working with.
 
 ```{r}
-glimpse(incomeData)
+j
 ```
 
-# Task 1.1
 
+2. Loading and Exploring Data
+Load the survey data into R from the appropriate file format (CSV or RData).
+Display the first few rows of the dataset to get an overview of the data structure.
+Check for missing values and handle them appropriately.
+Explore summary statistics of key variables (mean monthly expenses, demographic information, spending categories) to gain initial insights.
 ```{r}
-# Remove specified columns
-incomeData <- incomeData %>%
-  select(-fnlwgt, -capital.gain, -capital.loss)
+
 ```
 
-# Task 1.2
 
+3. Data Preprocessing
+Clean and preprocess the data as necessary (handling missing values, transforming variables, etc.).
+Create dummy variables for categorical predictors if needed.
+Normalize or scale continuous variables if required for the chosen modeling techniques.
 ```{r}
-# Fill missing values in 'native-country' column with 'others'
-incomeData <- incomeData %>%
-  mutate(native.country = ifelse(is.na(native.country), "others", native.country))
+
 ```
 
 
-# Task 2.1
-
+4. Exploratory Data Analysis (EDA)
+Conduct exploratory data analysis using visualizations (histograms, box plots, etc.) to understand the distribution of variables.
+Explore correlations between predictor variables and the outcome variable (monthly expenses).
+Generate insights into potential patterns and relationships within the data.
 ```{r}
-# Calculate mean and median working hours by education level
-education_working_hours <- incomeData %>%
-  group_by(education) %>%
-  summarize(working_mean = mean(hours.per.week), working_median = median(hours.per.week))
 
-# Create a data frame with three columns: "education", "working_mean", and "working_median"
-education_working_hours_table <- education_working_hours %>%
-  select(education, working_mean, working_median)
-
-# Print the resulting table
-print(education_working_hours_table)
 ```
 
-Is there any relation between education level and number of weekly working hours?
-
-Observations:
-
-Higher Education, Higher Hours (Mean): Generally, individuals with higher education levels tend to work more hours per week on average. For instance, individuals with education levels like 'Doctorate', 'Prof-school', and 'Masters' have higher mean working hours compared to those with lower education levels. This suggests that individuals with advanced degrees tend to work longer hours on average.
-
-Consistent Median Hours: Across various education levels, the median working hours are consistently around 40 hours per week. This indicates that, regardless of education level, a significant portion of individuals work standard full-time hours.
-
-Exceptions: There are a few exceptions. For instance, individuals with 'HS-grad' (high school graduates) have a mean working hours of 40.58, which is similar to the median, indicating a consistent workweek. On the other hand, individuals with 'Some-college' education have a lower mean working hours (38.85) compared to the median, indicating potential variability in working hours within this group.
-
-In summary, while the mean working hours vary across education levels, the median working hours remain consistent around 40 hours per week. Higher education levels tend to correlate with higher mean working hours, suggesting a relationship between advanced education and longer workweeks on average. However, it's important to note that individual circumstances, job types, and industries can influence these patterns.
-
-# Task 2.2
-
+5. Model Selection and Justification
+Choose appropriate machine learning models for prediction (e.g., linear regression, random forest, etc.).
+Justify your choice of models based on the nature of the data and the research question.
+Split the dataset into training and testing sets for model validation.
 ```{r}
-# Task 2.2: Total Number of Individuals by Native Country
-native_country_counts <- incomeData %>%
-  group_by(native.country) %>%
-  summarize(count = n()) %>%
-  arrange(desc(count))
 
-# Print the first 5 countries with the highest number of individuals
-print(head(native_country_counts, 5))
 ```
 
 
-# Task 3.1
-
+6. Model Training and Evaluation
+Train the selected models using the training dataset.
+Evaluate model performance using appropriate metrics (e.g., RMSE, R-squared) on the testing dataset.
+Compare the performance of different models if multiple models are used.
 ```{r}
-# Box plot for 'hours-per-week' by education level
-ggplot(incomeData, aes(x = education, y = hours.per.week)) +
-  geom_boxplot() +
-  labs(x = "Education Level", y = "Hours per Week") +
-  theme_minimal()
+
 ```
 
-What insights can you draw from this plot?
 
-Most education levels have the same range of working hours however Assoc-acdm, Assoc-voc, Bachelors, Doctorate, Masters, and Prof-school have higher working hours, with Doctorate and Prof-school going over 50 hours. Also, the highest median weekly working hours are observed for individuals with a degree in Prof-School. HS-grad shows the highest number of outliers in the graph, indicating significant variability in weekly working hours among high school graduates. The lower bound of the graph corresponds to individuals with an education level of 11th grade, indicating the minimum weekly working hours observed within this category.
-
-# Task 3.2
-
+7. Interpretation of Results
+Interpret the coefficients (if applicable) of the predictors in the selected model(s).
+Discuss the significance of predictors and how they relate to students' spending patterns.
+Use interpretable machine learning techniques (Partial Dependence Plots, Surrogate Models) to explain the impact of key variables.
 ```{r}
-# Faceted bar chart for count of individuals by education level and income
-ggplot(incomeData, aes(x = education, fill = income)) +
-  geom_bar() +
-  facet_wrap(~income) +
-  labs(x = "Education Level", y = "Count") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
-        plot.title = element_text(size = 20),  # Increase plot title size
-        strip.text = element_text(size = 15),  # Increase facet labels size
-        axis.text = element_text(size = 12),  # Increase axis text size
-        legend.text = element_text(size = 12))  # Increase legend text size
+
 ```
 
-What insights can you draw from these facetted plots?
 
-Most of the education levels tend to fall under the catergory earning less thank 50k, except for Masters, prof-school, and doctorate where there were almost equally the same under both categories. HS-grad has the highest count, exceeding 7500 individuals, followed by some-college in terms of frequency.
-
-# Task 3.3
-
+8. Discussion and Conclusion
+Summarize the key findings from the analysis.
+Discuss the implications of the results in the context of the research question.
+Address limitations and potential sources of bias in the analysis.
+Provide insights into how the findings can inform policies, support systems, and business strategies for students in urban Saudi environments.
 ```{r}
-ggplot(incomeData, aes(x = education, fill = income)) +
-  geom_bar(position = "fill") +
-  facet_wrap(~ sex, nrow = 1) +
-  xlab("Education level") +
-  ylab("Proportion") +
-  ggtitle("Income distribution across education levels faceted by gender") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
-        plot.title = element_text(size = 20),  # Increase plot title size
-        strip.text = element_text(size = 15),  # Increase facet labels size
-        axis.text = element_text(size = 12),  # Increase axis text size
-        legend.text = element_text(size = 12))  # Increase legend text size
+
 ```
-What does the chart reveal about income distribution across education levels?
 
-More males tend to fall under the category that earn more than 50k compared to women even when they have the same eqduaction level. As the level of education increases, the income tends to rise, with a higher proportion exceeding the $50,000 threshold.
-
-# Task 4.1
-
+9. Future Work
+Suggest potential areas for future research or analysis related to student spending patterns.
+Discuss any additional data or variables that could enhance the analysis if available.
 ```{r}
-# Create 'work_hours_per_year' column
-incomeData <- incomeData %>%
-  mutate(work_hours_per_year = hours.per.week * 52)
+
 ```
 
-# Task 5.1
 
+10. References
+Include references to relevant literature, datasets, and tools used in the analysis.
+Remember to include well-commented R code throughout the document to explain each step of the analysis clearly. This structure will help you organize your R Markdown file systematically and present your findings coherently. Good luck with your analysis!
 ```{r}
-# Read country income data
-countryIncome <- read.csv("data/country_income.csv")
-```
-
-# Task 5.2
-```{r}
-# Create 'income_category' column
-countryIncome <- countryIncome %>%
-  mutate(income_category = ifelse(avg_income <= 50000, '<=50K', '>50K'))
-```
-
-```{r}
-glimpse(incomeData)
-glimpse(countryIncome)
 
 ```
-
-
-# Task 5.3
-
-```{r}
-# Merge 'incomeData' and 'country_income' data frames using 'native_country'
-incomeData <- left_join(incomeData, countryIncome, by = c("native.country" = "Country"))
-```
-
-# Task 5.4
-
-```{r}
-# Remove observations where 'native_country' is 'United-States' or NA
-incomeData <- incomeData %>%
-  filter(!is.na(native.country) & native.country != " United-States")
-```
-
-# Task 5.5
-
-```{r}
-# Faceted Bar Chart for Count of Individuals by Income Level and Income Category
-ggplot(incomeData, aes(x = income)) +
-  geom_bar() +
-  facet_wrap(~ income_category, nrow = 1) +
-  xlab("Income Level") +
-  ylab("Count") +
-  ggtitle("Count of Individuals by Income Level (Faceted by Income Category)")
-```
-What insights can you draw from these facetted plots?
-
-Only a very few percatnages of people earn more than 50k
-
