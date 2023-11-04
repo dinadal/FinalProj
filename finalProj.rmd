@@ -36,6 +36,10 @@ Our primary outcome variable, Total Monthly Expenses ($), is the focal point of 
 Histogram of Total Monthly Expenses
 ```{r}
 #install.packages("readxl")
+install.packages("randomForest")
+install.packages("gbm")
+install.packages("DALEX")
+install.packages("DALEXtra")
 ```
 
 
@@ -294,9 +298,25 @@ pairs(university_students_data[selected_vars], pch = 16, col = "skyblue")
 Choose appropriate machine learning models for prediction (e.g., linear regression, random forest, etc.).
 Justify your choice of models based on the nature of the data and the research question.
 Split the dataset into training and testing sets for model validation.
+
+Random Forest regression is an ensemble learning method that can handle both numerical and categorical predictors. It is capable of capturing non-linear relationships, interactions, and complex patterns in the data. Since the dataset includes various factors that may have non-linear relationships with total monthly expenses, Random Forest regression can be a suitable choice.
+
+Splitting the dataset: Similar to linear regression, we can split the dataset into training and testing sets using a random sampling approach.
 ```{r}
+# Remove rows with missing values
+university_students_data <- na.omit(university_students_data)
 
+# Split the dataset into features (X) and target variable (y)
+X <- university_students_data[, -which(names(university_students_data) == "Monthly_expenses")]
+y <- university_students_data$Monthly_expenses
 
+# Split the data into training and testing sets
+set.seed(42)
+train_indices <- sample(1:nrow(university_students_data), 0.8*nrow(university_students_data))
+X_train <- X[train_indices, ]
+y_train <- y[train_indices]
+X_test <- X[-train_indices, ]
+y_test <- y[-train_indices]
 ```
 
 
@@ -304,21 +324,97 @@ Split the dataset into training and testing sets for model validation.
 Train the selected models using the training dataset.
 Evaluate model performance using appropriate metrics (e.g., RMSE, R-squared) on the testing dataset.
 Compare the performance of different models if multiple models are used.
-```{r}
 
+The comparison of evaluation metrics between the random forest (RF) and gradient boosting (gbm) models indicates that the random forest model performs better in terms of accuracy and generalization. It exhibits lower values for Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and Mean Absolute Error (MAE), suggesting more accurate predictions and smaller average prediction errors. 
+This implies that the random forest model is likely to provide better performance on unseen data and is a preferable choice in this scenario.
+
+Random Forest regression
+```{r}
+# Train the Random Forest regression model
+library(randomForest)
+RF_model <- randomForest(x = X_train, y = y_train, ntree = 100)
+
+# Make predictions on the testing set
+y_pred <- predict(RF_model, X_test)
+
+# Evaluate the model
+mse <- mean((y_pred - y_test)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(y_pred - y_test))
+r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
+
+# Print the evaluation metrics
+cat("Mean Squared Error (MSE):", mse, "\n")
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
-```{r}
+Gradient Boosting regression
 
+```{r}
+# Train the Gradient Boosting regression model
+library(gbm)
+
+# Convert the factor variable "Monthly_Subscription" in prediction data to match training data
+X_test$Monthly_Subscription <- factor(X_test$Monthly_Subscription, levels = levels(university_students_data$Monthly_Subscription))
+# Convert all columns to factor
+X_train <- lapply(X_train, as.factor)
+X_test <- lapply(X_test, as.factor)
+
+# Convert X_train and y_train to data frames
+train_data <- data.frame(X_train, y_train)
+
+# Train the Gradient Boosting regression model
+library(gbm)
+GBM_model <- gbm(
+  formula = y_train ~ .,
+  data = X_train,
+  n.trees = 100,
+  interaction.depth = 4,
+  shrinkage = 0.1,
+  distribution = "gaussian"
+)
+
+# Make predictions on the testing set
+y_pred <- predict(GBM_model, newdata = X_test, n.trees = 100)
+
+# Evaluate the model
+mse <- mean((y_pred - y_test)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(y_pred - y_test))
+r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
+
+# Print the evaluation metrics
+cat("Mean Squared Error (MSE):", mse, "\n")
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
 
 7. Interpretation of Results
 Interpret the coefficients (if applicable) of the predictors in the selected model(s).
-Discuss the significance of predictors and how they relate to students' spending patterns.
-Use interpretable machine learning techniques (Partial Dependence Plots, Surrogate Models) to explain the impact of key variables.
-```{r}
 
+Random Forest and Gradient Boosting models are different from linear regression, and they don't provide coefficients in the same way. These models don't have interpretable coefficients for individual predictors because they are based on complex ensemble methods involving decision trees.
+
+
+Discuss the significance of predictors and how they relate to students' spending patterns.
+
+idk
+
+Use interpretable machine learning techniques (Partial Dependence Plots, Surrogate Models) to explain the impact of key variables.
+
+Age: The coefficient for "Age" is 0.009934 with a p-value of 0.822, suggesting that "Age" does not have a statistically significant impact on monthly expenses.
+
+Part-time Job: The coefficient for "Part_time_jobYes" is -0.006109 with a p-value of 0.957, indicating that having a part-time job does not have a statistically significant impact on monthly expenses.
+
+In this linear regression model, neither "Age" nor "Part-time Job" appears to significantly affect monthly expenses, as indicated by their high p-values. The model overall has a low R-squared value, suggesting that it doesn't explain much of the variance in monthly expenses.
+
+```{r}
+# Build a surrogate linear regression model
+surrogate_model <- lm(Monthly_expenses ~ Age + Part_time_job, data = university_students_data)
+
+# Print the coefficients of the surrogate model
+summary(surrogate_model)
 ```
 
 
