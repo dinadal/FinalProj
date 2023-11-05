@@ -1,0 +1,93 @@
+---
+title: "Predicting and Analyzing College Student Lifestyle and Spending Patterns in Major Cities of Saudi Arabia"
+output: pdf_document
+date: "2023-11-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+o What is the aim of the project?
+– Summarize the problem
+– State your goals
+o What do you do in this report?
+– offer a roadmap of the project
+
+
+# Problem Statement and Background
+o Give a clear and complete statement of the problem and/or aim of your
+analysis.
+o Include a brief summary of any related work that has tried to tackle a project
+similar to yours (i.e. a light literature review)
+
+
+# Data
+o What is the unit of observation?
+o What is the outcome variable?
+– How is it measured?
+– Where does it come from?
+– Please describe how the outcome variable is distributed using a table
+and/or graph.
+o What are your predictor variables?
+– How are they measured?
+– Where do they come from?
+– Please describe how the predictor variable are distributed using a table
+and/or graph.
+o Outline any potential issues with the data:
+– Missingness
+– Lack of variation and/or availability
+– Any potential sources of bias
+o How do you overcome/mitigate these issues in your analysis?
+
+# Methodology
+
+
+# Analysis
+o Describe the methods/tools you explored in your project.
+o Outline in detail our entire analysis.
+– Justify the tools/methods that you used.
+– Assume the reader is smart but doesn’t know R/Machine Learning well. That
+is, be crystal clear about what you’re doing and why.
+o Note that this section should walk us through what you’re doing and how you’re
+planning on doing it. There should be no results presented in this section
+
+# Results
+o Give a detailed summary of your results. Present your results clearly and
+concisely.
+o Please use visualizations and tables whenever possible.
+o Be sure to:
+– Discuss the performance of your predictive model.
+– Use interpretable machine learning to talk about which variables were
+important in the prediction task and how they relate to the outcome (i.e.
+PDP/ICE/Surrogate Models)
+
+# Discussion
+o What conclusions should we pull from your analysis?
+o What are the limitations (i.e. what can’t we say given your findings)?
+o How would you expand the analysis if given more time?
+o Speak on the “success” of your project (as defined in your proposal).
+– Did you achieve what you set out to do? If not why?
+
+# References 
+# Appendix 
+
+
+
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
