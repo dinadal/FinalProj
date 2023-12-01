@@ -209,6 +209,7 @@ university_students_data$Monthly_expenses[university_students_data$Monthly_expen
 # Load required libraries
 library(caret)
 
+
 # Load data from the Excel file into a data frame
 university_students_data <- read_excel("university_students_data.xlsx")
 
@@ -248,6 +249,8 @@ test_data <- university_students_data[-train_index, ]
 Conduct exploratory data analysis using visualizations (histograms, box plots, etc.) to understand the distribution of variables.
 Explore correlations between predictor variables and the outcome variable (monthly expenses).
 Generate insights into potential patterns and relationships within the data.
+
+
 ```{r}
 # Load required libraries
 library(readxl)
@@ -302,10 +305,17 @@ Split the dataset into training and testing sets for model validation.
 Random Forest regression is an ensemble learning method that can handle both numerical and categorical predictors. It is capable of capturing non-linear relationships, interactions, and complex patterns in the data. Since the dataset includes various factors that may have non-linear relationships with total monthly expenses, Random Forest regression can be a suitable choice.
 
 Splitting the dataset: Similar to linear regression, we can split the dataset into training and testing sets using a random sampling approach.
+
+```{r}
+View(university_students_data)
+```
+
 ```{r}
 # Remove rows with missing values
 university_students_data <- na.omit(university_students_data)
+university_students_data <- university_students_data[,-12]
 
+X_test <- X_test[,-2]
 # Split the dataset into features (X) and target variable (y)
 X <- university_students_data[, -which(names(university_students_data) == "Monthly_expenses")]
 y <- university_students_data$Monthly_expenses
@@ -389,6 +399,84 @@ cat("Mean Squared Error (MSE):", mse, "\n")
 cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
+
+
+
+
+Ridge Regression Model
+```{r}
+# Install and load the glmnet library
+library(glmnet)
+
+# Convert all columns to appropriate types
+X_train <- lapply(X_train, as.numeric)
+X_test <- lapply(X_test, as.numeric)
+
+# Convert X_train and X_test back to data frames
+X_train <- data.frame(X_train)
+X_test <- data.frame(X_test)
+
+# Convert data frames to matrix, as required by glmnet
+X_train_matrix <- as.matrix(X_train)
+X_test_matrix <- as.matrix(X_test)
+
+# Train the Ridge Regression model
+set.seed(123)  # for reproducibility
+ridge_model <- glmnet(X_train_matrix, y_train, alpha = 0)
+
+# Determine the optimal lambda using cross-validation
+cv_ridge <- cv.glmnet(X_train_matrix, y_train, alpha = 0)
+optimal_lambda <- cv_ridge$lambda.min
+ridge_model <- glmnet(X_train_matrix, y_train, alpha = 0, lambda = optimal_lambda)
+
+# Make predictions on the testing set
+y_pred <- predict(ridge_model, newx = X_test_matrix)
+
+# Evaluate the model
+mse <- mean((y_pred - y_test)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(y_pred - y_test))
+r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
+
+# Print the evaluation metrics
+cat("Mean Squared Error (MSE):", mse, "\n")
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+cat("Mean Absolute Error (MAE):", mae, "\n")
+cat("R-squared:", r2, "\n")
+
+
+```
+
+
+
+SVM
+```{r}
+
+# Load the necessary library
+library(e1071)
+
+# Train the Support Vector Machine regression model
+svm_model <- svm(y_train ~ ., data = X_train, kernel = "radial", gamma = 0.1, cost = 10)
+
+# Make predictions on the testing set
+y_pred <- predict(svm_model, newdata = X_test)
+
+# Evaluate the model
+mse <- mean((y_pred - y_test)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(y_pred - y_test))
+r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
+
+# Print the evaluation metrics
+cat("Mean Squared Error (MSE):", mse, "\n")
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+cat("Mean Absolute Error (MAE):", mae, "\n")
+
+
+```
+
+
+
 
 
 7. Interpretation of Results
