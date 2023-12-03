@@ -389,7 +389,7 @@ if (any_missing) {
 
 ```{r}
 # Count the number of zero values in the Monthly_expenses column
-zero_count <- sum(university_students_data$Monthly_expenses == 0)
+zero_count <- sum(cleaned_dataset$Monthly_expenses == 0)
 
 # Print the result
 cat("Number of zero values in Monthly_expenses:", zero_count, "\n")
@@ -398,10 +398,10 @@ cat("Number of zero values in Monthly_expenses:", zero_count, "\n")
 
 ```{r}
 # Calculate the mean of non-zero values in Monthly_expenses
-non_zero_mean <- mean(university_students_data$Monthly_expenses[university_students_data$Monthly_expenses > 0], na.rm = TRUE)
+non_zero_mean <- mean(cleaned_dataset$Monthly_expenses[cleaned_dataset$Monthly_expenses > 0], na.rm = TRUE)
 
 # Replace zero values with the calculated mean
-university_students_data$Monthly_expenses[university_students_data$Monthly_expenses == 0] <- non_zero_mean
+cleaned_dataset$Monthly_expenses[cleaned_dataset$Monthly_expenses == 0] <- non_zero_mean
 
 ```
 
@@ -409,40 +409,37 @@ university_students_data$Monthly_expenses[university_students_data$Monthly_expen
 # Load required libraries
 library(caret)
 
-
-# Load data from the Excel file into a data frame
-university_students_data <- read_excel("university_students_data.xlsx")
+# Copy the original data to a new variable
+processed_data <- cleaned_dataset
 
 # Handling Missing Values
-missing_values <- colSums(is.na(university_students_data))
+missing_values <- colSums(is.na(processed_data))
 threshold <- 0.5
-university_students_data <- university_students_data[, missing_values / nrow(university_students_data) < threshold]
+processed_data <- processed_data[, missing_values / nrow(processed_data) < threshold]
 
 # Handling Zero Values in Monthly Expenses
-non_zero_mean <- mean(university_students_data$Monthly_expenses[university_students_data$Monthly_expenses > 0], na.rm = TRUE)
-university_students_data$Monthly_expenses[university_students_data$Monthly_expenses == 0] <- non_zero_mean
-
+non_zero_mean <- mean(processed_data$Monthly_expenses[processed_data$Monthly_expenses > 0], na.rm = TRUE)
+processed_data$Monthly_expenses[processed_data$Monthly_expenses == 0] <- non_zero_mean
 
 # Feature Scaling
-university_students_data$Age <- scale(university_students_data$Age)
-university_students_data$Monthly_expenses <- scale(university_students_data$Monthly_expenses)
+processed_data$Age <- scale(processed_data$Age)
+processed_data$Monthly_expenses <- scale(processed_data$Monthly_expenses)
 
 # Handling Outliers using IQR
-Q1 <- quantile(university_students_data$Age, 0.25)
-Q3 <- quantile(university_students_data$Age, 0.75)
+Q1 <- quantile(processed_data$Age, 0.25)
+Q3 <- quantile(processed_data$Age, 0.75)
 IQR <- Q3 - Q1
 lower_bound <- Q1 - 1.5 * IQR
 upper_bound <- Q3 + 1.5 * IQR
-university_students_data <- university_students_data[university_students_data$Age >= lower_bound & university_students_data$Age <= upper_bound, ]
-
+processed_data <- processed_data[processed_data$Age >= lower_bound & processed_data$Age <= upper_bound, ]
 # Handling Imbalanced Data (if needed)
 # For balancing classes, you can use techniques like undersampling or oversampling.
 
 # Data Splitting
 set.seed(123)  # for reproducibility
-train_index <- sample(1:nrow(university_students_data), 0.8 * nrow(university_students_data))
-train_data <- university_students_data[train_index, ]
-test_data <- university_students_data[-train_index, ]
+train_index <- sample(1:nrow(processed_data), 0.8 * nrow(processed_data))
+train_data <- processed_data[train_index, ]
+test_data <- processed_data[-train_index, ]
 ```
 
 4. Exploratory Data Analysis (EDA)
@@ -512,22 +509,27 @@ View(university_students_data)
 
 ```{r}
 # Remove rows with missing values
-university_students_data <- na.omit(university_students_data)
-university_students_data <- university_students_data[,-12]
+processed_data <- na.omit(processed_data)
 
-X_test <- X_test[,-2]
 # Split the dataset into features (X) and target variable (y)
-X <- university_students_data[, -which(names(university_students_data) == "Monthly_expenses")]
-y <- university_students_data$Monthly_expenses
+X <- processed_data[, -which(names(processed_data) == "Monthly_expenses")]
+y <- processed_data$Monthly_expenses
 
 # Split the data into training and testing sets
 set.seed(42)
-train_indices <- sample(1:nrow(university_students_data), 0.8*nrow(university_students_data))
+train_indices <- sample(1:nrow(processed_data), 0.8*nrow(processed_data))
 X_train <- X[train_indices, ]
 y_train <- y[train_indices]
 X_test <- X[-train_indices, ]
 y_test <- y[-train_indices]
 ```
+
+
+```{r}
+
+
+```
+
 
 
 6. Model Training and Evaluation
@@ -601,36 +603,12 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
 
-
-
-Ridge Regression Model
 ```{r}
-# Install and load the glmnet library
-library(glmnet)
-
-# Convert all columns to appropriate types
-X_train <- lapply(X_train, as.numeric)
-X_test <- lapply(X_test, as.numeric)
-
-# Convert X_train and X_test back to data frames
-X_train <- data.frame(X_train)
-X_test <- data.frame(X_test)
-
-# Convert data frames to matrix, as required by glmnet
-X_train_matrix <- as.matrix(X_train)
-X_test_matrix <- as.matrix(X_test)
-
-# Train the Ridge Regression model
-set.seed(123)  # for reproducibility
-ridge_model <- glmnet(X_train_matrix, y_train, alpha = 0)
-
-# Determine the optimal lambda using cross-validation
-cv_ridge <- cv.glmnet(X_train_matrix, y_train, alpha = 0)
-optimal_lambda <- cv_ridge$lambda.min
-ridge_model <- glmnet(X_train_matrix, y_train, alpha = 0, lambda = optimal_lambda)
+# Train the Linear Regression model
+lm_model <- lm(y_train ~ ., data = X_train)
 
 # Make predictions on the testing set
-y_pred <- predict(ridge_model, newx = X_test_matrix)
+y_pred <- predict(lm_model, newdata = X_test)
 
 # Evaluate the model
 mse <- mean((y_pred - y_test)^2)
@@ -642,38 +620,36 @@ r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
 cat("Mean Squared Error (MSE):", mse, "\n")
 cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 cat("Mean Absolute Error (MAE):", mae, "\n")
-cat("R-squared:", r2, "\n")
-
-
 ```
 
 
-
-SVM
 ```{r}
-
-# Load the necessary library
+# Load the necessary package
 library(e1071)
 
-# Train the Support Vector Machine regression model
-svm_model <- svm(y_train ~ ., data = X_train, kernel = "radial", gamma = 0.1, cost = 10)
+# Train the SVM model
+svm_model <- svm(y_train ~ ., data = X_train)
 
 # Make predictions on the testing set
 y_pred <- predict(svm_model, newdata = X_test)
 
 # Evaluate the model
-mse <- mean((y_pred - y_test)^2)
+mse <- mean((y_pred - y_test)^2, na.rm = TRUE) # Adding na.rm = TRUE to remove NA values if they exist
 rmse <- sqrt(mse)
-mae <- mean(abs(y_pred - y_test))
-r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
+mae <- mean(abs(y_pred - y_test), na.rm = TRUE) # Adding na.rm = TRUE to remove NA values if they exist
+r2 <- 1 - sum((y_test - y_pred)^2, na.rm = TRUE) / sum((y_test - mean(y_test, na.rm = TRUE))^2, na.rm = TRUE) # Adding na.rm = TRUE to remove NA values if they exist
 
 # Print the evaluation metrics
 cat("Mean Squared Error (MSE):", mse, "\n")
 cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 cat("Mean Absolute Error (MAE):", mae, "\n")
-
-
+cat("R squared:", r2, "\n")
 ```
+
+
+
+
+
 
 
 
