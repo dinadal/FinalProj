@@ -49,19 +49,43 @@ library(readxl)
 
 # Load data from the Excel file into a data frame
 university_students_data <- read_excel("university_students_data.xlsx")
+```
 
+
+```{r}
 # Clean the Monthly_expenses_$ column: convert to numeric and remove missing/NA values
 university_students_data$Monthly_expenses <- as.numeric(university_students_data$Monthly_expenses)
 
 # Remove rows with missing or NA values in Monthly_expenses_$
-university_students_data <- university_students_data[!is.na(university_students_data$Monthly_expenses), ]
+cleaned_dataset <- na.omit(university_students_data)
+```
 
+
+```{r}
+
+View(cleaned_dataset)
+
+# Check for missing values in the entire dataset
+any_missing <- any(is.na(cleaned_dataset))
+
+# Output whether there are missing values or not
+if (any_missing) {
+  print("There are missing values in the dataset.")
+} else {
+  print("No missing values found in the dataset.")
+}
+
+
+```
+
+
+```{r}
 # Create a histogram to visualize the distribution of Monthly_expenses_$
-hist(university_students_data$Monthly_expenses, 
+hist(cleaned_dataset$Monthly_expenses, 
      main = "Distribution of Monthly Expenses",
      xlab = "Monthly Expenses ($)",
      ylab = "Frequency",
-     col = "skyblue",  # Change the color if desired
+     col = "#69b3a2",  # Change the color if desired
      border = "black",  # Border color of the bars
      breaks = 20  # Number of bins in the histogram
 )
@@ -88,86 +112,262 @@ Check for missing values and handle them appropriately.
 Explore summary statistics of key variables (mean monthly expenses, demographic information, spending categories) to gain initial insights.
 ```{r}
 # Display the first few rows of the dataset
-head(university_students_data)
+head(cleaned_dataset)
 
 # Check for missing values in the entire dataset
-missing_values <- sum(is.na(university_students_data))
+missing_values <- sum(is.na(cleaned_dataset))
+missing_values
 
-# Handle missing values (assuming you want to remove rows with missing values)
-university_students_data <- na.omit(university_students_data)
+```
 
+
+```{r}
 # Explore summary statistics of key variables
-summary(university_students_data$Monthly_expenses)  # Summary statistics of monthly expenses
+summary(cleaned_dataset$Monthly_expenses)  # Summary statistics of monthly expenses
+```
 
+```{r}
 # Summary statistics of demographic information
-summary(university_students_data$Age)
-summary(university_students_data$Gender)
-summary(university_students_data$Study_year)
-# ... and other demographic variables
-
-# Summary statistics of spending categories
-summary(university_students_data$Games_and_Hobbies)
-summary(university_students_data$Cosmetics_and_Selfcare)
-# ... and other spending categories
-
-# Explore relationships between variables (for example, Age vs. Monthly_expenses)
-plot(university_students_data$Age, university_students_data$Monthly_expenses,
-     xlab = "Age", ylab = "Monthly Expenses", main = "Age vs. Monthly Expenses")
-
-# Save the cleaned data for further analysis
-write.csv(university_students_data, "cleaned_university_data.csv", row.names = FALSE)
+summary(cleaned_dataset$Age)
 
 ```
 
 ```{r}
-# Load necessary packages
-library(readxl)
+# Convert 'Gender' to factor
+cleaned_dataset$Gender <- factor(cleaned_dataset$Gender)
+
+# Summary table for Gender
+gender_summary <- table(cleaned_dataset$Gender)
+gender_summary
+
+```
+
+```{r}
+# Convert 'Study_year' to factor
+cleaned_dataset$Study_year <- factor(cleaned_dataset$Study_year)
+
+# Summary table for Study_year
+study_year_summary <- table(cleaned_dataset$Study_year)
+study_year_summary
+
+
+```
+
+
+```{r}
+# Summary of 'Games_and_Hobbies' 'Cosmetics_and_Selfcare'
+table(cleaned_dataset$Games_and_Hobbies)
+table(cleaned_dataset$Cosmetics_and_Selfcare)
+table(cleaned_dataset$Smoking)
+
+
+```
+
+```{r}
+# Frequency tables for all columns (including both numerical and categorical) (This gives a summary of everything in the dataset)
+lapply(cleaned_dataset, table)
+
+
+```
+
+
+
+```{r}
+
+library(ggplot2)
+
+# Scatter plot for study year against Monthly_expenses
+num_vars <- c( "Study_year")  # Add other numerical columns as needed
+
+# Loop through numerical variables to create scatter plots
+scatter_plots <- lapply(num_vars, function(var) {
+  ggplot(cleaned_dataset, aes_string(x = "Monthly_expenses", y = var)) +
+    geom_point(alpha = 0.5, color = "#2c3e50") +
+    labs(x = "Monthly Expenses", y = var, title = paste("Monthly Expenses vs", var)) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(size = 16, hjust = 0.5, margin = margin(b = 10)),
+      axis.title = element_text(size = 12),
+      axis.text = element_text(size = 10)
+    )
+})
+
+# Display the scatter plots
+print(scatter_plots)
+
+
+
+```
+
+```{r}
+# Bar chart of monthly expenses by location
+ggplot(data = cleaned_dataset, aes(x = Location, y = Monthly_expenses, fill = Location)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  labs(title = "Average Monthly Expenses by Location",
+       x = "Location", y = "Average Monthly Expenses")
+
+
+```
+
+
+```{r}
 library(dplyr)
+```
 
-# Load data from the Excel file into a data frame
-university_students_data <- read_excel("university_students_data.xlsx")
 
-# Histogram for Monthly Expenses
-hist(university_students_data$Monthly_expenses, 
-     main = "Distribution of Monthly Expenses",
-     xlab = "Monthly Expenses ($)",
-     ylab = "Frequency",
-     col = "skyblue",  
-     border = "black",  
-     breaks = 20)
-
+```{r}
 # Bar plot for Gender
-barplot(table(university_students_data$Gender),
+barplot(table(cleaned_dataset$Gender),
         main = "Gender Distribution",
         xlab = "Gender",
         ylab = "Count",
         col = "skyblue")
+```
 
-# Box plot for Monthly Expenses by Study Year
-boxplot(Monthly_expenses ~ Study_year, data = university_students_data,
-        main = "Monthly Expenses by Study Year",
-        xlab = "Study Year",
-        ylab = "Monthly Expenses ($)",
-        col = "skyblue")
+
+
+
+```{r}
+library(ggplot2)
 
 # Scatter plot for Age vs. Monthly Expenses
-plot(university_students_data$Age, university_students_data$Monthly_expenses,
+plot(cleaned_dataset$Age, cleaned_dataset$Monthly_expenses,
      xlab = "Age",
      ylab = "Monthly Expenses ($)",
      main = "Age vs. Monthly Expenses",
      col = "skyblue")
 
+
+```
+
+
+```{r}
 # Pie chart for Gender Distribution
-gender_counts <- table(university_students_data$Gender)
+gender_counts <- table(cleaned_dataset$Gender)
 pie(gender_counts, labels = names(gender_counts),
     main = "Gender Distribution",
     col = c("skyblue", "pink"))
+```
+
+
+```{r}
+# Compute the correlation matrix
+# Load the dplyr package
+library(dplyr)
 
 # Compute the correlation matrix
-correlation_matrix <- cor(select(university_students_data, c("Age", "Monthly_expenses")))
+correlation_matrix <- cor(select(cleaned_dataset, c("Age", "Monthly_expenses")))
+correlation_matrix
+
 
 
 ```
+
+^ A correlation coefficient close to 0 suggests a very weak linear relationship between 'Age' and 'Monthly_expenses'. In this case, the correlation between these two variables is quite low, indicating a very weak linear association between a person's age and their monthly expenses in your dataset.
+
+
+```{r}
+# Assuming Gender is coded as numeric (0 and 1)
+cleaned_dataset$Gender_numeric <- as.numeric(cleaned_dataset$Gender) - 1
+
+# Compute the correlation matrix between 'Gender' and 'Monthly_expenses'
+correlation_matrix <- cor(cleaned_dataset$Gender_numeric, cleaned_dataset$Monthly_expenses)
+correlation_matrix
+
+```
+
+^The correlation coefficient you've obtained (approximately 0.0671) between 'Gender' (represented numerically) and 'Monthly_expenses' suggests a very weak positive linear relationship between these variables.
+
+```{r}
+# Convert 'Scholarship' to numeric (if it's a categorical variable)
+cleaned_dataset$Scholarship_numeric <- as.numeric(cleaned_dataset$Scholarship == "Yes")
+
+# Compute the correlation between 'Scholarship' and 'Monthly_expenses'
+correlation_matrix <- cor(cleaned_dataset$Scholarship_numeric, cleaned_dataset$Monthly_expenses)
+correlation_matrix
+
+```
+
+The correlation coefficient of approximately 0.0012 between 'Scholarship' (represented numerically) and 'Monthly_expenses' suggests an extremely weak positive linear relationship between these variables.
+
+
+```{r}
+
+# Convert 'Location' into dummy variables
+dummy_location <- model.matrix(~ cleaned_dataset$Location - 1)  # -1 removes intercept
+
+# Combine Monthly_expenses and dummy_location
+data_with_dummies <- cbind(cleaned_dataset["Monthly_expenses"], dummy_location)
+
+# Compute correlation
+correlation_matrix <- cor(data_with_dummies)
+correlation_matrix["Monthly_expenses", -1]  # Exclude Monthly_expenses row
+
+```
+
+Jeddah shows a slight positive relationship, suggesting a small tendency for higher monthly expenses among individuals in that location.
+Khobar, Madinah, and Makkah all exhibit negative correlations, indicating a tendency for lower monthly expenses in these areas.
+Riyadh displays a stronger positive correlation, implying a stronger tendency for higher monthly expenses compared to the other locations
+
+
+```{r}
+# Convert 'Part_time_job' to a numeric variable
+cleaned_dataset$Part_time_job_numeric <- ifelse(cleaned_dataset$Part_time_job == "Yes", 1, 0)
+
+# Calculate correlation between Part_time_job_numeric and Monthly_expenses
+cor(cleaned_dataset$Part_time_job_numeric, cleaned_dataset$Monthly_expenses)
+
+
+
+```
+
+A correlation coefficient of approximately 0.001 suggests a very weak or negligible linear relationship between having a part-time job ('Part_time_job') and monthly expenses ('Monthly_expenses'). This value close to zero indicates that there's almost no linear association between these two variables in your dataset.
+
+
+```{r}
+# Convert 'Coffee_or_Energy_Drinks' to a numeric variable
+cleaned_dataset$Coffee_numeric <- ifelse(cleaned_dataset$Coffee_or_Energy_Drinks == "Yes", 1, 0)
+
+# Calculate correlation between Coffee_numeric and Monthly_expenses
+cor(cleaned_dataset$Coffee_numeric, cleaned_dataset$Monthly_expenses)
+
+
+```
+
+A correlation coefficient of approximately 0.0497 suggests a very weak or negligible linear relationship between consuming coffee or energy drinks ('Coffee_or_Energy_Drinks') and monthly expenses ('Monthly_expenses'). This value close to zero indicates that there's almost no linear association between these two variables in your dataset.
+
+```{r}
+# Filter out non-numeric columns
+numeric_cols <- cleaned_dataset[sapply(cleaned_dataset, is.numeric)]
+
+# Calculate correlations with Monthly_expenses for numeric columns
+correlation_with_expenses <- sapply(numeric_cols, function(x) cor(x, cleaned_dataset$Monthly_expenses))
+
+# Sort correlations
+correlation_with_expenses <- sort(correlation_with_expenses, decreasing = TRUE)
+correlation_with_expenses
+
+
+```
+
+'Monthly_expenses' has a correlation of 1.0 with itself, which is expected.
+'Gender_numeric' has a very weak positive correlation (0.067) with 'Monthly_expenses'.
+'Coffee_numeric' also shows a very weak positive correlation (0.0497) with 'Monthly_expenses'.
+'Age' has an extremely weak positive correlation (0.0263) with 'Monthly_expenses'.
+'Scholarship_numeric' and 'Part_time_job_numeric' have negligible correlations (close to 0) with 'Monthly_expenses'.
+
+
+
+```{r}
+# Assuming 'Gender' is a factor, conduct Chi-squared test
+chisq.test(cleaned_dataset$Gender, cleaned_dataset$Monthly_expenses)
+
+
+```
+
+
+
+
 
 3. Data Preprocessing
 Clean and preprocess the data as necessary (handling missing values, transforming variables, etc.).
