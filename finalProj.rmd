@@ -51,6 +51,20 @@ library(readxl)
 university_students_data <- read_excel("university_students_data.xlsx")
 ```
 
+```{r}
+# Assuming your data is loaded into a data frame named 'df'
+# Install and load necessary libraries if not already installed
+# install.packages("ggplot2")
+library(ggplot2)
+
+# Create a histogram for Monthly Expenses
+ggplot(df, aes(x = university_students_data$Monthly_expenses)) +
+  geom_histogram(binwidth = 50, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Monthly Expenses",
+       x = "Monthly Expenses ($)",
+       y = "Frequency")
+
+```
 
 ```{r}
 # Clean the Monthly_expenses_$ column: convert to numeric and remove missing/NA values
