@@ -80,20 +80,30 @@ if (any_missing) {
 
 
 ```{r}
-# Create a histogram to visualize the distribution of Monthly_expenses_$
+# Calculate the range of expenses
+min_expense <- min(cleaned_dataset$Monthly_expenses)
+max_expense <- max(cleaned_dataset$Monthly_expenses)
+
+# Create a histogram with adjusted axes
 hist(cleaned_dataset$Monthly_expenses, 
      main = "Distribution of Monthly Expenses",
-     xlab = "Monthly Expenses ($)",
+     xlab = "Monthly Expenses (SAR)",
      ylab = "Frequency",
-     col = "#69b3a2",  # Change the color if desired
-     border = "black",  # Border color of the bars
-     breaks = 20  # Number of bins in the histogram
+     col = "#69b3a2",
+     border = "black",
+     breaks = 20,
+     xlim = c(min_expense, max_expense),  # Set x-axis limits
+     ylim = c(0, max(table(cut(cleaned_dataset$Monthly_expenses, breaks = 20))) + 5)  # Set y-axis limits
 )
 
 # Add a title and labels to the histogram
 title(main = "Distribution of Monthly Expenses",
-      xlab = "Monthly Expenses ($)",
+      xlab = "Monthly Expenses (SAR)",
       ylab = "Frequency")
+
+
+
+
 ```
 
 
@@ -171,29 +181,56 @@ lapply(cleaned_dataset, table)
 ```
 
 
+The dataset collected from college students in urban Saudi Arabia sheds light on various facets of their lifestyle and expenditure patterns. Analyzing key parameters reveals intriguing insights into their spending habits, lifestyle choices, and demographic distribution.
+
+Demographic Overview:
+
+Gender Distribution: The dataset portrays a relatively balanced gender representation, with 366 female and 331 male respondents. This balance suggests a relatively equal participation of both genders in the survey.
+
+Age Range and Academic Year: The majority of respondents fall within the 18 to 23 age bracket, with significant representation from 18-year-olds (196 respondents) and 22-year-olds (210 respondents). 2nd-year students (290 respondents) dominate the academic year distribution.
+
+Living Arrangements and Socioeconomic Background:
+
+Living Arrangements: The dataset reflects a mix of living arrangements, with 341 respondents residing at home and 340 in dormitories, suggesting the diversity in living preferences among urban college students.
+
+Socioeconomic Background: The participants come from varying socioeconomic backgrounds, with 249 respondents identifying with a low socioeconomic status, followed by 219 from a high and 229 from a medium socioeconomic background. This diversity might impact their spending behaviors and financial decisions.
+
+Financial Behaviors and Expenditure:
+
+Scholarship and Employment: A significant portion of respondents (206) reported having a scholarship, while 134 indicated having part-time jobs. This suggests a blend of financial aid and self-sustenance among urban college students.
+
+Monthly Expenses: The data unveils a spectrum of monthly expenses, with the most common range falling between 300 and 1500 dollars. However, it's noteworthy that there are outliers reporting higher expenses, indicating potential variations in spending capacities.
+
+Subscription Preferences: More respondents (410) indicated spending on monthly subscriptions compared to other categories like cosmetics and self-care (362) or games and hobbies (422), signifying an inclination towards certain lifestyle choices.
+
+Interest Areas and Majors:
+
+Academic Majors: The dataset represents a diverse range of academic majors, including Engineering, Medicine, Business, Computer Science, Art, and Others. This diversity in majors might influence spending habits based on the specific requirements of each field.
+
+
 
 ```{r}
 
 library(ggplot2)
 
-# Scatter plot for study year against Monthly_expenses
-num_vars <- c( "Study_year")  # Add other numerical columns as needed
+library(ggplot2)
 
-# Loop through numerical variables to create scatter plots
-scatter_plots <- lapply(num_vars, function(var) {
-  ggplot(cleaned_dataset, aes_string(x = "Monthly_expenses", y = var)) +
-    geom_point(alpha = 0.5, color = "#2c3e50") +
-    labs(x = "Monthly Expenses", y = var, title = paste("Monthly Expenses vs", var)) +
-    theme_minimal() +
-    theme(
-      plot.title = element_text(size = 16, hjust = 0.5, margin = margin(b = 10)),
-      axis.title = element_text(size = 12),
-      axis.text = element_text(size = 10)
-    )
-})
+# Calculate the mean or median expenses for each study year
+expenses_by_year <- aggregate(cleaned_dataset$Monthly_expenses, 
+                              by = list(Study_year = cleaned_dataset$Study_year), 
+                              FUN = mean)  # Change to median if preferred
 
-# Display the scatter plots
-print(scatter_plots)
+# Bar plot for mean/median expenses per study year
+ggplot(expenses_by_year, aes(x = factor(Study_year), y = x)) +
+  geom_bar(stat = "identity", fill = "#2c3e50") +
+  labs(x = "Study Year", y = "Mean Monthly Expenses", 
+       title = "Mean Monthly Expenses by Study Year") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, hjust = 0.5, margin = margin(b = 10)),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  )
 
 
 
@@ -235,7 +272,7 @@ plot(cleaned_dataset$Age, cleaned_dataset$Monthly_expenses,
      xlab = "Age",
      ylab = "Monthly Expenses ($)",
      main = "Age vs. Monthly Expenses",
-     col = "skyblue")
+     col = "black")
 
 
 ```
@@ -373,19 +410,6 @@ chisq.test(cleaned_dataset$Gender, cleaned_dataset$Monthly_expenses)
 Clean and preprocess the data as necessary (handling missing values, transforming variables, etc.).
 Create dummy variables for categorical predictors if needed.
 Normalize or scale continuous variables if required for the chosen modeling techniques.
-```{r}
-cleaned_data <- na.omit(university_students_data)
-# Check for missing values in the entire dataframe
-any_missing <- any(is.na(university_students_data$Monthly_expenses) | university_students_data$Monthly_expenses == 0)
-
-# Print the result
-if (any_missing) {
-  print("There are missing values in the dataset.")
-} else {
-  print("There are no missing values in the dataset.")
-}
-
-```
 
 ```{r}
 # Count the number of zero values in the Monthly_expenses column
@@ -533,14 +557,17 @@ y_test <- y[-train_indices]
 
 
 6. Model Training and Evaluation
-Train the selected models using the training dataset.
-Evaluate model performance using appropriate metrics (e.g., RMSE, R-squared) on the testing dataset.
-Compare the performance of different models if multiple models are used.
 
-The comparison of evaluation metrics between the random forest (RF) and gradient boosting (gbm) models indicates that the random forest model performs better in terms of accuracy and generalization. It exhibits lower values for Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and Mean Absolute Error (MAE), suggesting more accurate predictions and smaller average prediction errors. 
-This implies that the random forest model is likely to provide better performance on unseen data and is a preferable choice in this scenario.
+
+
 
 Random Forest regression
+
+Model Selection:
+For predicting monthly expenses among college students in urban Saudi Arabia, a Random Forest regression model was chosen due to its robustness in handling complex datasets, non-parametric nature, ability to capture nonlinear relationships, and feature importance estimation.
+
+Model Training and Evaluation:
+The Random Forest regression model was trained on a portion of the dataset and evaluated using various metrics to assess its predictive performance on unseen data. 
 ```{r}
 # Train the Random Forest regression model
 library(randomForest)
@@ -562,6 +589,14 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
 Gradient Boosting regression
+
+The choice of employing Gradient Boosting Regression for predicting monthly expenses among college students in urban Saudi Arabia was driven by several factors:
+
+Enhanced Predictive Power: Gradient Boosting Regression is known for its ability to build powerful predictive models by iteratively improving weak learners, minimizing errors, and producing strong ensemble models.
+
+Handling Nonlinear Relationships: This model excels in capturing complex nonlinear relationships between predictors and the target variable, which is crucial when dealing with diverse financial behaviors and expenditures among college students.
+
+Reduction of Overfitting: Gradient Boosting techniques mitigate overfitting tendencies by sequentially introducing weak learners, thereby improving generalizability to new data.
 
 ```{r}
 # Train the Gradient Boosting regression model
@@ -603,6 +638,14 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
 
+
+Model Selection Rationale:
+The choice of Linear Regression for predicting monthly expenses among college students was driven by its simplicity, interpretability, and suitability for capturing linear relationships between predictors and the target variable.
+
+Interpretability: Linear Regression allows easy interpretation of coefficients, enabling insights into the impact of each predictor variable on monthly expenses.
+
+Baseline Model: Often used as a baseline model in regression tasks, Linear Regression provides a fundamental understanding of predictive performance before employing more complex models.
+
 ```{r}
 # Train the Linear Regression model
 lm_model <- lm(y_train ~ ., data = X_train)
@@ -622,7 +665,11 @@ cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
+The choice of employing Support Vector Machine for predicting monthly expenses among college students was driven by its robustness in handling complex data relationships, particularly suitable for scenarios with potentially non-linear relationships between predictors and the target variable.
 
+Non-linear Relationships: SVM can effectively capture non-linear relationships between predictors and the target variable, which could be beneficial when dealing with diverse financial behaviors and expenditures among college students.
+
+Ability to Handle High-Dimensional Data: SVM performs well in high-dimensional spaces, making it effective for datasets with numerous predictors, potentially capturing various factors influencing monthly expenses.
 ```{r}
 # Load the necessary package
 library(e1071)
@@ -648,52 +695,45 @@ cat("R squared:", r2, "\n")
 
 
 
-
-
-
-
-
-
-
 7. Interpretation of Results
-Interpret the coefficients (if applicable) of the predictors in the selected model(s).
 
-Random Forest and Gradient Boosting models are different from linear regression, and they don't provide coefficients in the same way. These models don't have interpretable coefficients for individual predictors because they are based on complex ensemble methods involving decision trees.
+The investigation aimed to predict monthly expenses among urban Saudi Arabian college students using machine learning models. The initial implementation of the Linear Regression model provided a foundational understanding of expense prediction. It exhibited a moderate level of accuracy, demonstrating an MSE of 0.288479, RMSE of 0.5371024, and MAE of 0.3583089. These metrics indicated a relatively small absolute deviation in expense prediction, offering an initial benchmark for comparison.
+
+The exploration extended to Gradient Boosting Regression, showcasing promising accuracy with an MSE of 0.2333653, RMSE of 0.483079, and MAE of 0.3294818. This model hinted at slightly lower errors compared to Linear Regression, signifying potential improvements in expense estimation. The nature of boosting algorithms might have contributed to capturing complex patterns in the data, resulting in enhanced predictive capabilities.
+
+On the other hand, the Support Vector Machine (SVM) model, with MSE, RMSE, and MAE metrics around 0.3058188, 0.5530089, and 0.3644939, respectively, portrayed competitive yet marginally less accurate estimations of monthly expenses. The inherent complexity of SVM might have slightly impacted its predictive precision in this context.
+
+Additionally, the exploration involved theoretical assessment through Random Forest Regression, revealing an MSE of 0.3299316, RMSE of 0.5743967, and MAE of 0.412111. While demonstrating potential enhancements, empirical validation is essential to ascertain its effectiveness. Random Forest's ability to handle non-linear relationships and feature importance might offer valuable insights for improved expense prediction.
 
 
-Discuss the significance of predictors and how they relate to students' spending patterns.
-
-idk
-
-Use interpretable machine learning techniques (Partial Dependence Plots, Surrogate Models) to explain the impact of key variables.
-
-Age: The coefficient for "Age" is 0.009934 with a p-value of 0.822, suggesting that "Age" does not have a statistically significant impact on monthly expenses.
-
-Part-time Job: The coefficient for "Part_time_jobYes" is -0.006109 with a p-value of 0.957, indicating that having a part-time job does not have a statistically significant impact on monthly expenses.
-
-In this linear regression model, neither "Age" nor "Part-time Job" appears to significantly affect monthly expenses, as indicated by their high p-values. The model overall has a low R-squared value, suggesting that it doesn't explain much of the variance in monthly expenses.
-
-```{r}
-# Build a surrogate linear regression model
-surrogate_model <- lm(Monthly_expenses ~ Age + Part_time_job, data = university_students_data)
-
-# Print the coefficients of the surrogate model
-summary(surrogate_model)
-```
 
 
 8. Discussion and Conclusion
+
+The outcomes of the analysis highlight Gradient Boosting Regression as a model with promising accuracy, potentially surpassing Linear Regression in expense estimation. The observed marginally lower errors in Gradient Boosting Regression suggest its ability to capture intricate patterns within the dataset, potentially leading to improved predictions. However, Linear Regression, while slightly less accurate, provided a solid baseline for expense estimation among college students in urban Saudi Arabia.
+
+The Support Vector Machine (SVM), although competitive, demonstrated slightly lower accuracy than both Linear Regression and Gradient Boosting. The complexity of SVM might have slightly affected its predictive capacity within this specific context. The hypothetical exploration of Random Forest Regression hinted at potential enhancements, yet empirical validation remains pivotal for establishing its effectiveness in refining expense predictions.
 Summarize the key findings from the analysis.
-Discuss the implications of the results in the context of the research question.
-Address limitations and potential sources of bias in the analysis.
-Provide insights into how the findings can inform policies, support systems, and business strategies for students in urban Saudi environments.
+
+Addressing the limitations of the analysis is crucial. The study focused primarily on a specific set of features related to expenses, potentially overlooking other influential variables impacting students' spending behaviors. Additionally, the availability and quality of data might have influenced the models' performances. Future research should encompass a wider spectrum of variables and gather more extensive, diverse datasets to mitigate bias and enhance the models' robustness.
+
+This investigation illuminates the potential of machine learning in predicting monthly expenses among urban Saudi Arabian college students. Gradient Boosting Regression stands out as a promising model, showcasing marginally superior predictive accuracy. However, the theoretical exploration of Random Forest Regression suggests untapped potential, demanding empirical validation for conclusive insights.
+
+The implications of these findings extend beyond predictive models. They offer valuable insights into designing tailored support systems, policies, and business strategies for students in urban Saudi environments. A more accurate estimation of monthly expenses can aid educational institutions, policymakers, and financial institutions in devising targeted financial aid, budgeting tools, and support programs. Additionally, businesses catering to student needs could refine their offerings based on a better understanding of spending patterns.
+
 ```{r}
+install.packages("vip")
+library(vip)
+
 
 ```
 
+
+
 9. Future Work
-Suggest potential areas for future research or analysis related to student spending patterns.
-Discuss any additional data or variables that could enhance the analysis if available.
+
+
+
 ```{r}
 
 ```
