@@ -548,16 +548,8 @@ y_test <- y[-train_indices]
 
 6. Model Training and Evaluation
 
-
-
-
 Random Forest regression
 
-Model Selection:
-For predicting monthly expenses among college students in urban Saudi Arabia, a Random Forest regression model was chosen due to its robustness in handling complex datasets, non-parametric nature, ability to capture nonlinear relationships, and feature importance estimation.
-
-Model Training and Evaluation:
-The Random Forest regression model was trained on a portion of the dataset and evaluated using various metrics to assess its predictive performance on unseen data. 
 ```{r}
 # Train the Random Forest regression model
 library(randomForest)
@@ -579,13 +571,8 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
 
+ Linear Regression model
 
-Model Selection Rationale:
-The choice of Linear Regression for predicting monthly expenses among college students was driven by its simplicity, interpretability, and suitability for capturing linear relationships between predictors and the target variable.
-
-Interpretability: Linear Regression allows easy interpretation of coefficients, enabling insights into the impact of each predictor variable on monthly expenses.
-
-Baseline Model: Often used as a baseline model in regression tasks, Linear Regression provides a fundamental understanding of predictive performance before employing more complex models.
 
 ```{r}
 # Train the Linear Regression model
@@ -606,11 +593,7 @@ cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
-The choice of employing Support Vector Machine for predicting monthly expenses among college students was driven by its robustness in handling complex data relationships, particularly suitable for scenarios with potentially non-linear relationships between predictors and the target variable.
-
-Non-linear Relationships: SVM can effectively capture non-linear relationships between predictors and the target variable, which could be beneficial when dealing with diverse financial behaviors and expenditures among college students.
-
-Ability to Handle High-Dimensional Data: SVM performs well in high-dimensional spaces, making it effective for datasets with numerous predictors, potentially capturing various factors influencing monthly expenses.
+SVM
 ```{r}
 # Load the necessary package
 library(e1071)
@@ -684,31 +667,43 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 ```
 
 
+
+
+
+
+```{r}
+# Sample code using ggplot2
+library(ggplot2)
+
+# Create a data frame with model names and performance metrics
+model_names <- c("Random Forest", "Linear Regression", "SVM", "Gradient Boosting")
+mse <- c(0.329, 0.288, 0.305, 0.233)
+rmse <- c(0.574, 0.537, 0.553, 0.483)
+mae <- c(0.412, 0.358, 0.364, 0.329)
+model_performance <- data.frame(Model = model_names, MSE = mse, RMSE = rmse, MAE = mae)
+
+# Plotting MSE for each model
+ggplot(model_performance, aes(x = Model, y = MSE)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  labs(title = "Comparative Model Performance (MSE)", y = "MSE") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+
+
+
 7. Interpretation of Results
 
-The investigation aimed to predict monthly expenses among urban Saudi Arabian college students using machine learning models. The initial implementation of the Linear Regression model provided a foundational understanding of expense prediction. It exhibited a moderate level of accuracy, demonstrating an MSE of 0.288479, RMSE of 0.5371024, and MAE of 0.3583089. These metrics indicated a relatively small absolute deviation in expense prediction, offering an initial benchmark for comparison.
-
-The exploration extended to Gradient Boosting Regression, showcasing promising accuracy with an MSE of 0.2333653, RMSE of 0.483079, and MAE of 0.3294818. This model hinted at slightly lower errors compared to Linear Regression, signifying potential improvements in expense estimation. The nature of boosting algorithms might have contributed to capturing complex patterns in the data, resulting in enhanced predictive capabilities.
-
-On the other hand, the Support Vector Machine (SVM) model, with MSE, RMSE, and MAE metrics around 0.3058188, 0.5530089, and 0.3644939, respectively, portrayed competitive yet marginally less accurate estimations of monthly expenses. The inherent complexity of SVM might have slightly impacted its predictive precision in this context.
-
-Additionally, the exploration involved theoretical assessment through Random Forest Regression, revealing an MSE of 0.3299316, RMSE of 0.5743967, and MAE of 0.412111. While demonstrating potential enhancements, empirical validation is essential to ascertain its effectiveness. Random Forest's ability to handle non-linear relationships and feature importance might offer valuable insights for improved expense prediction.
 
 
 
 
 8. Discussion and Conclusion
 
-The outcomes of the analysis highlight Gradient Boosting Regression as a model with promising accuracy, potentially surpassing Linear Regression in expense estimation. The observed marginally lower errors in Gradient Boosting Regression suggest its ability to capture intricate patterns within the dataset, potentially leading to improved predictions. However, Linear Regression, while slightly less accurate, provided a solid baseline for expense estimation among college students in urban Saudi Arabia.
 
-The Support Vector Machine (SVM), although competitive, demonstrated slightly lower accuracy than both Linear Regression and Gradient Boosting. The complexity of SVM might have slightly affected its predictive capacity within this specific context. The hypothetical exploration of Random Forest Regression hinted at potential enhancements, yet empirical validation remains pivotal for establishing its effectiveness in refining expense predictions.
-Summarize the key findings from the analysis.
-
-Addressing the limitations of the analysis is crucial. The study focused primarily on a specific set of features related to expenses, potentially overlooking other influential variables impacting students' spending behaviors. Additionally, the availability and quality of data might have influenced the models' performances. Future research should encompass a wider spectrum of variables and gather more extensive, diverse datasets to mitigate bias and enhance the models' robustness.
-
-This investigation illuminates the potential of machine learning in predicting monthly expenses among urban Saudi Arabian college students. Gradient Boosting Regression stands out as a promising model, showcasing marginally superior predictive accuracy. However, the theoretical exploration of Random Forest Regression suggests untapped potential, demanding empirical validation for conclusive insights.
-
-The implications of these findings extend beyond predictive models. They offer valuable insights into designing tailored support systems, policies, and business strategies for students in urban Saudi environments. A more accurate estimation of monthly expenses can aid educational institutions, policymakers, and financial institutions in devising targeted financial aid, budgeting tools, and support programs. Additionally, businesses catering to student needs could refine their offerings based on a better understanding of spending patterns.
 
 
 9. Future Work
