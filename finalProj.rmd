@@ -672,25 +672,32 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 
 
 ```{r}
-# Sample code using ggplot2
+# Create a dataframe for the model metrics
+models <- c("Random Forest", "Linear Regression", "SVM", "Gradient Boosting")
+MSE <- c(0.3299, 0.2885, 0.3058, 0.2334)
+RMSE <- c(0.5744, 0.5371, 0.5530, 0.4831)
+MAE <- c(0.4121, 0.3583, 0.3645, 0.3295)
+
+df <- data.frame(models, MSE, RMSE, MAE)
+
+# Plotting the bar graph
 library(ggplot2)
+library(dplyr)
+library(tidyr)
 
-# Create a data frame with model names and performance metrics
-model_names <- c("Random Forest", "Linear Regression", "SVM", "Gradient Boosting")
-mse <- c(0.329, 0.288, 0.305, 0.233)
-rmse <- c(0.574, 0.537, 0.553, 0.483)
-mae <- c(0.412, 0.358, 0.364, 0.329)
-model_performance <- data.frame(Model = model_names, MSE = mse, RMSE = rmse, MAE = mae)
+df_long <- df %>%
+  pivot_longer(cols = -models, names_to = "Metric", values_to = "Value")
 
-# Plotting MSE for each model
-ggplot(model_performance, aes(x = Model, y = MSE)) +
-  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
-  labs(title = "Comparative Model Performance (MSE)", y = "MSE") +
+ggplot(df_long, aes(x = models, y = Value, fill = Metric)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(title = "Comparison of Model Performance Metrics",
+       x = "Models",
+       y = "Metric Values") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(values = c("MSE" = "#efb04d", "RMSE" = "#5242f8", "MAE" = "#7af842"))
 
 ```
-
 
 
 

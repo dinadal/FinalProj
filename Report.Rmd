@@ -121,7 +121,7 @@ For predicting monthly expenses among college students in urban Saudi Arabia, a 
 
 The choice of Linear Regression for predicting monthly expenses among college students was driven by its simplicity, interpretability, and suitability for capturing linear relationships between predictors and the target variable. Interpretability: Linear Regression allows easy interpretation of coefficients, enabling insights into the impact of each predictor variable on monthly expenses.Baseline Model: Often used as a baseline model in regression tasks, Linear Regression provides a fundamental understanding of predictive performance before employing more complex models
 
-3.SVM
+3. SVM
 
 The choice of employing Support Vector Machine for predicting monthly expenses among college students was driven by its robustness in handling complex data relationships, particularly suitable for scenarios with potentially non-linear relationships between predictors and the target variable. Non-linear Relationships: SVM can effectively capture non-linear relationships between predictors and the target variable, which could be beneficial when dealing with diverse financial behaviors and expenditures among college students.Ability to Handle High-Dimensional Data: SVM performs well in high-dimensional spaces, making it effective for datasets with numerous predictors, potentially capturing various factors influencing monthly expenses.
 
@@ -137,37 +137,45 @@ Each model was meticulously selected based on its unique strengths, aiming to un
 
 # Results
 
-Random Forest Regression:
+## Random Forest Regression:
 
-Performance Metrics:
-Mean Squared Error (MSE): 0.3299
-Root Mean Squared Error (RMSE): 0.5744
-Mean Absolute Error (MAE): 0.4121
-Performance Assessment: Moderately accurate predictions with the lowest MSE among models.
+Performance Metrics:  
+1) Mean Squared Error (MSE): 0.3299  
+2) Root Mean Squared Error (RMSE): 0.5744  
+3) Mean Absolute Error (MAE): 0.4121  
+4) Performance Assessment: Moderately accurate predictions with the lowest MSE among models.  
 
-Linear Regression:
+## Linear Regression:
+Performance Metrics:  
+1) MSE: 0.2885  
+2) RMSE: 0.5371  
+3) MAE: 0.3583  
+4) Performance Assessment:Demonstrated marginally better accuracy compared to other models.  
 
-Performance Metrics:
-MSE: 0.2885
-RMSE: 0.5371
-MAE: 0.3583
-Performance Assessment:Demonstrated marginally better accuracy compared to other models.
+## Support Vector Machine (SVM):
 
-Support Vector Machine (SVM):
+Performance Metrics:  
+1) MSE: 0.3058  
+2) RMSE: 0.5530  
+3) MAE: 0.3645  
+4) Performance Assessment:Competitive predictive accuracy, especially in handling non-linear relationships.  
 
-Performance Metrics:
-MSE: 0.3058
-RMSE: 0.5530
-MAE: 0.3645
-Performance Assessment:Competitive predictive accuracy, especially in handling non-linear relationships.
 
-Gradient Boosting Regression:
+## Gradient Boosting Regression:
 
-Performance Metrics:
-MSE: 0.2334
-RMSE: 0.4831
-MAE: 0.3295
-Performance Assessment:Offered moderately accurate predictions and handled complex non-linear relationships effectively.
+Performance Metrics:  
+1) MSE: 0.2334  
+2) RMSE: 0.4831  
+3) MAE: 0.3295  
+4) Performance Assessment:Offered moderately accurate predictions and handled complex non-linear relationships effectively.  
+
+![Comparision of the model's evaluation metrics](Rplot.png
+)
+
+
+
+
+
 
 
 The outcomes of the analysis highlight Gradient Boosting Regression as a model with promising accuracy, potentially surpassing Linear Regression in expense estimation. The observed marginally lower errors in Gradient Boosting Regression suggest its ability to capture intricate patterns within the dataset, potentially leading to improved predictions. However, Linear Regression, while slightly less accurate, provided a solid baseline for expense estimation among college students in urban Saudi Arabia.
@@ -182,7 +190,8 @@ This investigation illuminates the potential of machine learning in predicting m
 
 
 # Discussion
-Model Performances:
+
+## Model Performances:
 
 The analysis revealed that all employed models—Random Forest, Linear Regression, SVM, and Gradient Boosting—presented moderately accurate predictions for estimating monthly expenses among college students. Each model showcased its strengths in handling different aspects of the dataset.
 Variable Importance:
@@ -191,20 +200,27 @@ The exploration of variable importance elucidated significant predictors influen
 Limitations:
 
 Despite the models' relatively accurate predictions, limitations exist in capturing nuanced spending behaviors and contextual factors not explicitly included in the dataset. The models might not fully account for individual preferences or external economic fluctuations influencing expenses.
-Expansion Possibilities:
-Given more time, the analysis could be expanded in several ways:
 
-Feature Engineering: Enhancing the dataset by including additional variables like extracurricular activities, family income, or social habits could provide a more comprehensive understanding of spending behaviors.
-Model Refinement: Fine-tuning model hyperparameters or exploring ensemble methods could potentially improve predictive accuracy.
-Data Collection: Obtaining more diverse and detailed data on spending habits or conducting surveys could augment the analysis.
-Success Evaluation:
+## Expansion Possibilities:
+The analysis could be expanded in several ways:
+
+1) Feature Engineering: Enhancing the dataset by including additional variables like extracurricular activities, family income, or social habits could provide a more comprehensive understanding of spending behaviors.
+
+2) Model Refinement: Fine-tuning model hyperparameters or exploring ensemble methods could potentially improve predictive accuracy.
+
+3) Data Collection: Obtaining more diverse and detailed data on spending habits or conducting surveys could augment the analysis.
+
+
+## Success Evaluation:
 
 The project has succeeded in:
 
-Providing insights into monthly expense prediction among college students in an urban Saudi Arabian setting.
-Demonstrating the applicability of various machine learning models in estimating expenses.
-Identifying key predictors influencing spending behaviors, laying the groundwork for future investigations.
-Project Goals Achievement:
+1) Providing insights into monthly expense prediction among college students in an urban Saudi Arabian setting.
+2) Demonstrating the applicability of various machine learning models in estimating expenses.
+3) Identifying key predictors influencing spending behaviors, laying the groundwork for future investigations.
+
+
+## Project Goals Achievement:
 The project achieved its primary goal of creating predictive models for monthly expenses. However, it is essential to acknowledge that while the models offer valuable insights, they might not capture the complete spectrum of factors influencing individual spending behaviors due to inherent limitations in available data and model complexities.
 
 
