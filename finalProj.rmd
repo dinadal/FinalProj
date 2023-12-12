@@ -34,13 +34,6 @@ In this study, our dataset originates from a meticulously tailored survey design
 Our primary outcome variable, Total Monthly Expenses ($), is the focal point of our analysis. Derived from the survey responses, this variable quantifies the financial expenditure of each student, covering a diverse array of spending categories. Its measurement provides a comprehensive view of students' financial realities. To offer a visual understanding, we represent the distribution of total monthly expenses through a histogram, elucidating the range and frequency of expenditure levels, as depicted below.
 
 Histogram of Total Monthly Expenses
-```{r}
-#install.packages("readxl")
-install.packages("randomForest")
-install.packages("gbm")
-install.packages("DALEX")
-install.packages("DALEXtra")
-```
 
 
 ```{r}
@@ -549,10 +542,7 @@ y_test <- y[-train_indices]
 ```
 
 
-```{r}
 
-
-```
 
 
 
@@ -575,55 +565,6 @@ RF_model <- randomForest(x = X_train, y = y_train, ntree = 100)
 
 # Make predictions on the testing set
 y_pred <- predict(RF_model, X_test)
-
-# Evaluate the model
-mse <- mean((y_pred - y_test)^2)
-rmse <- sqrt(mse)
-mae <- mean(abs(y_pred - y_test))
-r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
-
-# Print the evaluation metrics
-cat("Mean Squared Error (MSE):", mse, "\n")
-cat("Root Mean Squared Error (RMSE):", rmse, "\n")
-cat("Mean Absolute Error (MAE):", mae, "\n")
-```
-
-Gradient Boosting regression
-
-The choice of employing Gradient Boosting Regression for predicting monthly expenses among college students in urban Saudi Arabia was driven by several factors:
-
-Enhanced Predictive Power: Gradient Boosting Regression is known for its ability to build powerful predictive models by iteratively improving weak learners, minimizing errors, and producing strong ensemble models.
-
-Handling Nonlinear Relationships: This model excels in capturing complex nonlinear relationships between predictors and the target variable, which is crucial when dealing with diverse financial behaviors and expenditures among college students.
-
-Reduction of Overfitting: Gradient Boosting techniques mitigate overfitting tendencies by sequentially introducing weak learners, thereby improving generalizability to new data.
-
-```{r}
-# Train the Gradient Boosting regression model
-library(gbm)
-
-# Convert the factor variable "Monthly_Subscription" in prediction data to match training data
-X_test$Monthly_Subscription <- factor(X_test$Monthly_Subscription, levels = levels(university_students_data$Monthly_Subscription))
-# Convert all columns to factor
-X_train <- lapply(X_train, as.factor)
-X_test <- lapply(X_test, as.factor)
-
-# Convert X_train and y_train to data frames
-train_data <- data.frame(X_train, y_train)
-
-# Train the Gradient Boosting regression model
-library(gbm)
-GBM_model <- gbm(
-  formula = y_train ~ .,
-  data = X_train,
-  n.trees = 100,
-  interaction.depth = 4,
-  shrinkage = 0.1,
-  distribution = "gaussian"
-)
-
-# Make predictions on the testing set
-y_pred <- predict(GBM_model, newdata = X_test, n.trees = 100)
 
 # Evaluate the model
 mse <- mean((y_pred - y_test)^2)
@@ -693,6 +634,54 @@ cat("Mean Absolute Error (MAE):", mae, "\n")
 cat("R squared:", r2, "\n")
 ```
 
+Gradient Boosting regression
+
+The choice of employing Gradient Boosting Regression for predicting monthly expenses among college students in urban Saudi Arabia was driven by several factors:
+
+Enhanced Predictive Power: Gradient Boosting Regression is known for its ability to build powerful predictive models by iteratively improving weak learners, minimizing errors, and producing strong ensemble models.
+
+Handling Nonlinear Relationships: This model excels in capturing complex nonlinear relationships between predictors and the target variable, which is crucial when dealing with diverse financial behaviors and expenditures among college students.
+
+Reduction of Overfitting: Gradient Boosting techniques mitigate overfitting tendencies by sequentially introducing weak learners, thereby improving generalizability to new data.
+
+```{r}
+# Train the Gradient Boosting regression model
+library(gbm)
+
+# Convert the factor variable "Monthly_Subscription" in prediction data to match training data
+X_test$Monthly_Subscription <- factor(X_test$Monthly_Subscription, levels = levels(university_students_data$Monthly_Subscription))
+# Convert all columns to factor
+X_train <- lapply(X_train, as.factor)
+X_test <- lapply(X_test, as.factor)
+
+# Convert X_train and y_train to data frames
+train_data <- data.frame(X_train, y_train)
+
+# Train the Gradient Boosting regression model
+library(gbm)
+GBM_model <- gbm(
+  formula = y_train ~ .,
+  data = X_train,
+  n.trees = 100,
+  interaction.depth = 4,
+  shrinkage = 0.1,
+  distribution = "gaussian"
+)
+
+# Make predictions on the testing set
+y_pred <- predict(GBM_model, newdata = X_test, n.trees = 100)
+
+# Evaluate the model
+mse <- mean((y_pred - y_test)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(y_pred - y_test))
+r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
+
+# Print the evaluation metrics
+cat("Mean Squared Error (MSE):", mse, "\n")
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+cat("Mean Absolute Error (MAE):", mae, "\n")
+```
 
 
 7. Interpretation of Results
@@ -720,14 +709,6 @@ Addressing the limitations of the analysis is crucial. The study focused primari
 This investigation illuminates the potential of machine learning in predicting monthly expenses among urban Saudi Arabian college students. Gradient Boosting Regression stands out as a promising model, showcasing marginally superior predictive accuracy. However, the theoretical exploration of Random Forest Regression suggests untapped potential, demanding empirical validation for conclusive insights.
 
 The implications of these findings extend beyond predictive models. They offer valuable insights into designing tailored support systems, policies, and business strategies for students in urban Saudi environments. A more accurate estimation of monthly expenses can aid educational institutions, policymakers, and financial institutions in devising targeted financial aid, budgeting tools, and support programs. Additionally, businesses catering to student needs could refine their offerings based on a better understanding of spending patterns.
-
-```{r}
-install.packages("vip")
-library(vip)
-
-
-```
-
 
 
 9. Future Work
