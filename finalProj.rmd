@@ -699,8 +699,79 @@ ggplot(df_long, aes(x = models, y = Value, fill = Metric)) +
 
 ```
 
+MSE
+```{r}
+ggplot(df_long, aes(x = models, y = Value, color = models)) +
+  geom_line() +
+  labs(title = "Comparison of Model Performance - MSE",
+       x = "Models",
+       y = "MSE") +
+  theme_minimal()
+```
 
+RMSE
+```{r}
+ggplot(df_long, aes(x = models, y = Value, color = models)) +
+  geom_line() +
+  labs(title = "Comparison of Model Performance - RMSE",
+       x = "Models",
+       y = "RMSE") +
+  theme_minimal()
+```
 
+MAE
+```{r}
+ggplot(df_long, aes(x = models, y = Value, color = models)) +
+  geom_line() +
+  labs(title = "Comparison of Model Performance - MAE",
+       x = "Models",
+       y = "MAE") +
+  theme_minimal()
+```
+
+```{r}
+# Remove rows with missing values
+processed_data <- na.omit(processed_data)
+
+# Split the dataset into features (X) and target variable (y)
+X <- processed_data[, -which(names(processed_data) == "Monthly_expenses")]
+y <- processed_data$Monthly_expenses
+
+# Split the data into training and testing sets
+set.seed(42)
+train_indices <- sample(1:nrow(processed_data), 0.8*nrow(processed_data))
+X_train <- X[train_indices, ]
+y_train <- y[train_indices]
+X_test <- X[-train_indices, ]
+y_test <- y[-train_indices]
+
+# Make predictions on the testing set for each model
+RF_predictions <- predict(RF_model, X_test)
+lm_predictions <- predict(lm_model, newdata = X_test)
+svm_predictions <- predict(svm_model, newdata = X_test)
+GBM_predictions <- predict(GBM_model, newdata = X_test, n.trees = 100)
+
+# Create a dataframe with actual values and predictions
+results <- data.frame(Actual = y_test, 
+                      RF = RF_predictions,
+                      LM = lm_predictions,
+                      SVM = svm_predictions,
+                      GBM = GBM_predictions)
+
+# Plot the actual values and predictions
+library(ggplot2)
+library(tidyr)
+
+# Plot the actual values and predictions
+ggplot(results_long, aes(x = Actual, y = Prediction)) +
+  geom_point(aes(color = Model), alpha = 0.8) +
+  scale_color_manual(values = c("black", "red", "blue", "green", "purple")) +
+  labs(title = "Actual vs. Predicted Values",
+       x = "Actual",
+       y = "Prediction") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
 
 7. Interpretation of Results
 
