@@ -77,7 +77,7 @@ The existing body of work provides valuable insights into broader trends but fal
 # Data
 
 ## Source of Survey Questions:
-The survey instrument used in this study is adapted from a previous research project, with questions specifically tailored to the context of Saudi universities. The original set of questions served as a foundational framework, and modifications were made to ensure relevance and cultural appropriateness within the Saudi context.
+The survey instrument used in this study is adapted from a previous research projects (Bharat Singh  & Surendra Raj, 2020) (Shagundwi, 2022), with questions specifically tailored to the context of Saudi universities. 344 Responces were received by sending out the survey to different university students accross Saudi Arabia' major cities. The original set of questions served as a foundational framework, and modifications were made to ensure relevance and cultural appropriateness within the Saudi context.
 
 ## Unit of Observation:
 
@@ -235,17 +235,19 @@ In conclusion, this research has provided significant insights into the financia
 
 # References 
 
-Al, S. S., & Abu. (2023). Factors Influencing Consumer Behavior towards Online Shopping in Saudi Arabia Amid COVID-19: Implications for E-Businesses Post Pandemic. Journal of Risk and Financial Management, 16(1), 36–36. https://doi.org/10.3390/jrfm16010036
-
 Al-Khateeb, E., Al-Khateeb, B., & Algharabat, R. (2015). Saudi consumers' behaviors towards the use of credit cards. International Journal of Bank Marketing, 33(4), 423-440.
 
 Al-Rethaiaa, A. S., Fahmy, A.-E. A., & Alshwaiyat, N. M. (2010). Obesity and eating habits among college students in Saudi Arabia: a cross sectional study. Nutrition Journal, 9(1). https://doi.org/10.1186/1475-2891-9-39
 
-Ali Saleh Alshebami, & Theyazn H. H. Aldhyani. (2022). The Interplay of Social Influence, Financial Literacy, and Saving Behaviour among Saudi Youth and the Moderating Effect of Self-Control. Sustainability, 14(14), 8780–8780. https://doi.org/10.3390/su14148780
-
 Alsahafi, N., & Shin, S.-C. (2017). Online. Journal of International Students, 7(1), 53–72. Retrieved from https://files.eric.ed.gov/fulltext/EJ1125725.pdf
 
+Ali Saleh Alshebami, & Theyazn H. H. Aldhyani. (2022). The Interplay of Social Influence, Financial Literacy, and Saving Behaviour among Saudi Youth and the Moderating Effect of Self-Control. Sustainability, 14(14), 8780–8780. https://doi.org/10.3390/su14148780
+
+Al, S. S., & Abu. (2023). Factors Influencing Consumer Behavior towards Online Shopping in Saudi Arabia Amid COVID-19: Implications for E-Businesses Post Pandemic. Journal of Risk and Financial Management, 16(1), 36–36. https://doi.org/10.3390/jrfm16010036
+
 Ben Douissa, I. (2020, November). Factors affecting college students’ multidimensional financial literacy in the Middle East. International Review of Economics Education. https://www.sciencedirect.com/science/article/abs/pii/S1477388019300611
+
+Bharat Singh , T., &amp; Surendra Raj, N. (2020). Financial Literacy in Nepal: A survey analysis from college students. https://www.researchgate.net/profile/Bharat-Thapa/publication/349622597_Financial_Literacy_in_Nepal_A_Survey_Analysis_from_College_Students/links/6038831c4585158939cdc176/Financial-Literacy-in-Nepal-A-Survey-Analysis-from-College-Students.pdf 
 
 Hamdan, A., Sue L.T. Mcgregor, & Elhassan, W. (2021, June 5). Financial Literacy, Stability, and Security as Understood by Male Saudi University Students. Retrieved December 14, 2023, from ResearchGate website: https://www.researchgate.net/publication/352251201_Financial_Literacy_Stability_and_Security_as_Understood_by_Male_Saudi_University_Students
 
@@ -257,6 +259,10 @@ Rehr, T., Regan, E., & Abukar, Z. (2022, March). Financial Wellness of first-gen
 
 Saeed, T. (2014, October 13). Examining the Level of Financial Literacy among Saudi Investors and Its Impact on Financial Decisions. Retrieved December 14, 2023, from ResearchGate website: https://www.researchgate.net/publication/287399490_Examining_the_Level_of_Financial_Literacy_among_Saudi_Investors_and_Its_Impact_on_Financial_Decisions
 
+Shagundwi. (2022, November 11). UNI students monthly expenses. Kaggle. https://www.kaggle.com/code/shagundwi/uni-students-monthly-expenses 
 
 # Appendix 
 
+## Survey form that was shared 
+
+https://forms.gle/ZcSciwvjcakPCvCC7
