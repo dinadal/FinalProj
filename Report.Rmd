@@ -1,8 +1,12 @@
 ---
 title: "Predicting and Analyzing College Student Lifestyle and Spending Patterns in Major Cities of Saudi Arabia"
-output: pdf_document
-date: "2023-12-12"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3 # Set the desired depth of the TOC  
 ---
+
+   
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -29,6 +33,33 @@ The project addresses the fundamental issue of understanding the financial dynam
 # Literature Review
 
 Prior research has explored the financial behaviors of college students on a global scale, providing valuable insights into the challenges and dynamics of student spending. However, within the specific context of urban Saudi Arabia, there is a notable dearth of studies focusing on the nuanced intricacies of students' financial decisions. This light literature review aims to highlight key themes and findings from existing research, setting the stage for our exploration into the unique challenges faced by college students in major Saudi cities.
+
+## Financial Behavior of Saudi College Students
+Research specifically focusing on Saudi college students' financial behaviors is limited but growing. (Ali Saleh Alshebami & Theyazn H. H. Aldhyani, 2022) provides a foundational look into the spending habits of Saudi students, indicating a trend towards consumerism influenced by social circles and family support. This is echoed by the fac that financial support from families often dictates the spending habits and lifestyle choices of students in Saudi Arabia.
+
+## The Role of Financial Education
+In Saudi Arabia, the perceived need for financial education among college students is gaining attention. (Saeed, 2014) argue that the lack of formal financial education in the Saudi education system could lead to poor financial decisions among youths. This gap in the education system highlights the need for initiatives that can bolster financial literacy, particularly as the country's economy diversifies under Vision 2030.
+
+
+## Socioeconomic Background and Spending Patterns
+The relationship between socioeconomic status and spending behavior is a critical area of study. (Hamdan, Sue L.T. Mcgregor, & Elhassan, 2021) explored this within the Saudi context, finding that students from higher socioeconomic backgrounds tend to exhibit more significant consumerist behaviors. These patterns are also influenced by the rapidly changing retail landscape in urban areas, as discussed by (Otaibi & Kausar Yasmeen, 2014), who highlighted the proliferation of malls and luxury goods as a factor in student spending.
+
+
+## Cultural Influences on Financial Behavior
+Saudi Arabia's cultural norms and values exert a strong influence on spending habits. (Alsahafi & Shin, 2017) examined how cultural expectations, particularly around events and social gatherings, can lead to increased expenditure among college students. The pressure to maintain social status through material possessions is particularly pronounced in urban centers where there is greater exposure to luxury and consumerist lifestyles.
+
+
+## Lifestyle Choices and Expenditure Patterns
+The lifestyle choices of Saudi college students, including leisure activities, dining out, and travel, are influenced by a combination of globalized cultural trends and local traditions (Qahwaji, 2023).(Al & Abu, 2023) highlight how the pursuit of a modern lifestyle among students in urban centers can lead to increased discretionary spending.
+
+
+## Cultural and Familial Influence
+Saudi society maintains strong familial ties, and this extends into the financial behaviors of college students. (Al-Rethaiaa, Fahmy, & Alshwaiyat, 2010) suggests that family allowances are the primary source of income for many students, which can lead to a lack of financial autonomy and experience in managing personal finances. The cultural emphasis on generosity and hospitality can also lead to increased social spending.
+
+
+In conclusion, our literature review has laid a foundational understanding of the existing knowledge on college student lifestyle and spending patterns, particularly within major cities of Saudi Arabia. Through scrutinizing various studies, we've identified key factors that influence these patterns and have revealed a substantial gap in localized research. This synthesis will serve as a cornerstone for our own analysis, allowing for a more tailored approach to understanding and predicting the behaviors of Saudi college students. The insights derived from our review will guide the methodology of our primary research and ensure that it is grounded in a robust theoretical framework.
+
+
 
 ## Global Perspective:
 
@@ -169,12 +200,11 @@ Performance Metrics:
 3) MAE: 0.3295  
 4) Performance Assessment:Offered moderately accurate predictions and handled complex non-linear relationships effectively.  
 
-![Comparision of the model's evaluation metrics](Rplot.png
-)
+![Comparision of the model's evaluation metrics](Rplot.png)
 
 
 
-
+![Actual vs. Predicted Values](idk.png)
 
 
 
@@ -191,44 +221,41 @@ This investigation illuminates the potential of machine learning in predicting m
 
 # Discussion
 
-## Model Performances:
+The exploration of college students' financial behaviors in urban Saudi Arabia has been a critical endeavor, aimed at unraveling the intricate patterns that shape spending habits within this unique cultural and socioeconomic landscape. Throughout this research, our primary objectives centered on comprehending the multifaceted influences on spending patterns while acknowledging the challenges and limitations inherent in such an analysis.
 
-The analysis revealed that all employed models—Random Forest, Linear Regression, SVM, and Gradient Boosting—presented moderately accurate predictions for estimating monthly expenses among college students. Each model showcased its strengths in handling different aspects of the dataset.
-Variable Importance:
+Our analysis, employing a range of statistical and machine learning techniques, showcased promising outcomes in estimating monthly expenses among college students. The models—Random Forest, Linear Regression, SVM, and Gradient Boosting—demonstrated commendable accuracy, revealing key predictors such as study year, living arrangements, and major that significantly impact spending behaviors.
 
-The exploration of variable importance elucidated significant predictors influencing monthly expenses. Key factors such as "Study_year," "Living" arrangements, and "Major" emerged as influential variables across various models.
-Limitations:
+However, within the confines of our dataset and modeling approaches, it's crucial to acknowledge the inherent limitations. While these models offer valuable insights, they might not encapsulate the complete spectrum of factors shaping individual spending behaviors. This recognition lays the groundwork for potential avenues of improvement and expansion in future research endeavors.
 
-Despite the models' relatively accurate predictions, limitations exist in capturing nuanced spending behaviors and contextual factors not explicitly included in the dataset. The models might not fully account for individual preferences or external economic fluctuations influencing expenses.
+Our success lies not only in the creation of predictive models but also in the identification of these limitations, which pave the way for further investigations. Suggestions for feature engineering, model refinement, and comprehensive data collection serve as pathways toward enriching our understanding of the complex dynamics influencing student spending behaviors.
 
-## Expansion Possibilities:
-The analysis could be expanded in several ways:
+Moving forward, a deeper exploration of nuanced factors like extracurricular activities, family income, or social habits could contribute to a more comprehensive understanding of student financial dynamics. Additionally, refining models and exploring advanced methodologies could enhance predictive accuracy and broaden the applicability of our findings.
 
-1) Feature Engineering: Enhancing the dataset by including additional variables like extracurricular activities, family income, or social habits could provide a more comprehensive understanding of spending behaviors.
-
-2) Model Refinement: Fine-tuning model hyperparameters or exploring ensemble methods could potentially improve predictive accuracy.
-
-3) Data Collection: Obtaining more diverse and detailed data on spending habits or conducting surveys could augment the analysis.
-
-
-## Success Evaluation:
-
-The project has succeeded in:
-
-1) Providing insights into monthly expense prediction among college students in an urban Saudi Arabian setting.
-2) Demonstrating the applicability of various machine learning models in estimating expenses.
-3) Identifying key predictors influencing spending behaviors, laying the groundwork for future investigations.
-
-
-## Project Goals Achievement:
-The project achieved its primary goal of creating predictive models for monthly expenses. However, it is essential to acknowledge that while the models offer valuable insights, they might not capture the complete spectrum of factors influencing individual spending behaviors due to inherent limitations in available data and model complexities.
-
+In conclusion, this research has provided significant insights into the financial behaviors of college students in urban Saudi Arabia. It not only highlights the potential of machine learning techniques in estimating expenses but also underscores the necessity for continuous refinement and expansion of research parameters to truly comprehend the intricate web of factors influencing spending habits. This study sets the stage for future investigations and practical applications aimed at tailored support systems and business strategies catering to the specific needs of Saudi college students.
 
 # References 
 
-Ben Douissa, I. (2020, November). Factors affecting college students’ multidimensional financial literacy in the Middle East. International Review of Economics Education. https://www.sciencedirect.com/science/article/abs/pii/S1477388019300611 
+Al, S. S., & Abu. (2023). Factors Influencing Consumer Behavior towards Online Shopping in Saudi Arabia Amid COVID-19: Implications for E-Businesses Post Pandemic. Journal of Risk and Financial Management, 16(1), 36–36. https://doi.org/10.3390/jrfm16010036
 
-Rehr, T., Regan, E., &amp; Abukar, Z. (2022, March). Financial Wellness of first-generation college students - researchgate. https://www.researchgate.net/publication/360460354_Financial_Wellness_of_First-Generation_College_Students 
+Al-Khateeb, E., Al-Khateeb, B., & Algharabat, R. (2015). Saudi consumers' behaviors towards the use of credit cards. International Journal of Bank Marketing, 33(4), 423-440.
+
+Al-Rethaiaa, A. S., Fahmy, A.-E. A., & Alshwaiyat, N. M. (2010). Obesity and eating habits among college students in Saudi Arabia: a cross sectional study. Nutrition Journal, 9(1). https://doi.org/10.1186/1475-2891-9-39
+
+Ali Saleh Alshebami, & Theyazn H. H. Aldhyani. (2022). The Interplay of Social Influence, Financial Literacy, and Saving Behaviour among Saudi Youth and the Moderating Effect of Self-Control. Sustainability, 14(14), 8780–8780. https://doi.org/10.3390/su14148780
+
+Alsahafi, N., & Shin, S.-C. (2017). Online. Journal of International Students, 7(1), 53–72. Retrieved from https://files.eric.ed.gov/fulltext/EJ1125725.pdf
+
+Ben Douissa, I. (2020, November). Factors affecting college students’ multidimensional financial literacy in the Middle East. International Review of Economics Education. https://www.sciencedirect.com/science/article/abs/pii/S1477388019300611
+
+Hamdan, A., Sue L.T. Mcgregor, & Elhassan, W. (2021, June 5). Financial Literacy, Stability, and Security as Understood by Male Saudi University Students. Retrieved December 14, 2023, from ResearchGate website: https://www.researchgate.net/publication/352251201_Financial_Literacy_Stability_and_Security_as_Understood_by_Male_Saudi_University_Students
+
+Otaibi, A., & Kausar Yasmeen. (2014, December). Saudi consumer’s shopping behaviour: Descriptive Analysis. Retrieved December 14, 2023, from ResearchGate website: https://www.researchgate.net/publication/287531379_Saudi_consumer's_shopping_behaviourDescriptive_Analysis
+
+Qahwaji, D. M. (2023). Lifestyle behaviours, dietary habits, physical activity and biochemical measurements in Saudi University students. Medical Science, 27(134). https://doi.org/10.54905/disssi/v27i134/e198ms2940
+
+Rehr, T., Regan, E., & Abukar, Z. (2022, March). Financial Wellness of first-generation college students - researchgate. https://www.researchgate.net/publication/360460354_Financial_Wellness_of_First-Generation_College_Students
+
+Saeed, T. (2014, October 13). Examining the Level of Financial Literacy among Saudi Investors and Its Impact on Financial Decisions. Retrieved December 14, 2023, from ResearchGate website: https://www.researchgate.net/publication/287399490_Examining_the_Level_of_Financial_Literacy_among_Saudi_Investors_and_Its_Impact_on_Financial_Decisions
 
 
 # Appendix 

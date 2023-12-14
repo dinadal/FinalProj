@@ -10,28 +10,6 @@ output:
   toc: true
 ---
 
-# Introduction:
-
-
-In the vibrant landscape of urban Saudi Arabia, college students navigate a myriad of challenges as they pursue their education and carve out their future. Balancing academic commitments with financial constraints and lifestyle choices, these students embody the complex interplay of ambition, culture, and socioeconomic factors. This research embarks on a crucial exploration, aiming to unravel the underlying patterns that influence the spending habits and lifestyle choices of college students in major Saudi cities.
-
-The primary aim of this project is to gain profound insights into the financial behaviors of college students in urban Saudi environments. We seek to understand the diverse factors, including gender, age, study year, socioeconomic background, and individual habits, that impact students' spending patterns. By delving deep into these intricacies, we aim to unravel the unique challenges faced by students, providing a nuanced understanding of their financial decisions within the cultural context of Saudi Arabia.
-
-
-Our goals are to uncover patterns- identify recurring patterns and trends in students' spending habits, shedding light on the factors driving these behaviors-, inform support systems- provide actionable insights for educational institutions and policymakers to design targeted support systems, addressing the specific needs of students-, and enhance student experience- facilitate businesses catering to students in tailoring their services, ensuring they align with authentic student needs and preferences.
-
-In this report, we will meticulously analyze the dataset, employing various statistical and machine learning techniques to derive meaningful conclusions. We will offer a comprehensive roadmap of our analysis, encompassing data collection, preprocessing, modeling, and interpretation of results. Through detailed visualizations and clear explanations, we aim to present a cohesive narrative of our findings, allowing readers to grasp the complexities of student financial behaviors in Saudi urban environments.
-
-# Significance and Problem Statement:
-
-The project addresses the fundamental issue of understanding the financial dynamics of college students in urban Saudi settings. While prior studies have explored similar themes on a global scale, there exists a dearth of research focusing specifically on the nuanced context of Saudi Arabian students within their local cities. This project bridges this gap by conducting a light literature review, summarizing existing works related to student spending behaviors and lifestyle choices. By drawing on this background, we contextualize our analysis, laying the foundation for our exploration into the unique challenges faced by students in major Saudi cities.
-
-#Data:
-
-In this study, our dataset originates from a meticulously tailored survey designed for the specific cultural context of Saudi Arabia. The unit of observation encompasses individual college students residing in major cities across the country. The cornerstone of our analysis lies in the total monthly expenses, a pivotal metric indicating the financial behaviors of our surveyed students.
-
-##Outcome Variable:
-Our primary outcome variable, Total Monthly Expenses ($), is the focal point of our analysis. Derived from the survey responses, this variable quantifies the financial expenditure of each student, covering a diverse array of spending categories. Its measurement provides a comprehensive view of students' financial realities. To offer a visual understanding, we represent the distribution of total monthly expenses through a histogram, elucidating the range and frequency of expenditure levels, as depicted below.
 
 Histogram of Total Monthly Expenses
 
@@ -100,19 +78,12 @@ title(main = "Distribution of Monthly Expenses",
 ```
 
 
-##Predictor Variables:
-The predictor variables employed in our analysis were curated from a published paper, ensuring their relevance and reliability. These variables include gender, age, study year, living arrangements, socioeconomic background, part-time job status, transportation mode, smoking habits, coffee/energy drinks consumption, count of monthly subscriptions, location, and major. Each variable, meticulously chosen, is instrumental in unraveling the nuanced factors shaping students' spending habits and lifestyle choices.
 
-##Data Challenges and Mitigation Strategies:
-While analyzing the dataset, we encountered several challenges. Addressing missing data, we employed imputation techniques to maintain a complete dataset, preserving the integrity of our analysis. To overcome issues related to limited variation or availability within specific variables, we carefully examined their distributions. In instances where variables demonstrated restricted variation, we amalgamated categories, ensuring the meaningfulness of our insights. Furthermore, to mitigate potential biases introduced by the survey's sampling method or response patterns, we adopted a meticulous approach, aiming for a diverse and representative sample. Sensitivity analyses were conducted, evaluating the impact of biases on our results, thereby enhancing the robustness and credibility of our findings.
 
 
 
 2. Loading and Exploring Data
-Load the survey data into R from the appropriate file format (CSV or RData).
-Display the first few rows of the dataset to get an overview of the data structure.
-Check for missing values and handle them appropriately.
-Explore summary statistics of key variables (mean monthly expenses, demographic information, spending categories) to gain initial insights.
+
 ```{r}
 # Display the first few rows of the dataset
 head(cleaned_dataset)
@@ -688,90 +659,26 @@ library(tidyr)
 df_long <- df %>%
   pivot_longer(cols = -models, names_to = "Metric", values_to = "Value")
 
+# Define colors for the fill
+my_colors <- c("MSE" = "#efb04d", "RMSE" = "#5242f8", "MAE" = "#7af842")
+
 ggplot(df_long, aes(x = models, y = Value, fill = Metric)) +
   geom_bar(stat = "identity", position = "dodge", width = 0.7) +
   labs(title = "Comparison of Model Performance Metrics",
        x = "Models",
        y = "Metric Values") +
+  scale_fill_manual(values = my_colors) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_manual(values = c("MSE" = "#efb04d", "RMSE" = "#5242f8", "MAE" = "#7af842"))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title = element_blank(),
+        legend.position = "top") +
+  guides(fill = guide_legend(title = "Metrics"))
+
 
 ```
 
-MSE
-```{r}
-ggplot(df_long, aes(x = models, y = Value, color = models)) +
-  geom_line() +
-  labs(title = "Comparison of Model Performance - MSE",
-       x = "Models",
-       y = "MSE") +
-  theme_minimal()
-```
 
-RMSE
-```{r}
-ggplot(df_long, aes(x = models, y = Value, color = models)) +
-  geom_line() +
-  labs(title = "Comparison of Model Performance - RMSE",
-       x = "Models",
-       y = "RMSE") +
-  theme_minimal()
-```
 
-MAE
-```{r}
-ggplot(df_long, aes(x = models, y = Value, color = models)) +
-  geom_line() +
-  labs(title = "Comparison of Model Performance - MAE",
-       x = "Models",
-       y = "MAE") +
-  theme_minimal()
-```
-
-```{r}
-# Remove rows with missing values
-processed_data <- na.omit(processed_data)
-
-# Split the dataset into features (X) and target variable (y)
-X <- processed_data[, -which(names(processed_data) == "Monthly_expenses")]
-y <- processed_data$Monthly_expenses
-
-# Split the data into training and testing sets
-set.seed(42)
-train_indices <- sample(1:nrow(processed_data), 0.8*nrow(processed_data))
-X_train <- X[train_indices, ]
-y_train <- y[train_indices]
-X_test <- X[-train_indices, ]
-y_test <- y[-train_indices]
-
-# Make predictions on the testing set for each model
-RF_predictions <- predict(RF_model, X_test)
-lm_predictions <- predict(lm_model, newdata = X_test)
-svm_predictions <- predict(svm_model, newdata = X_test)
-GBM_predictions <- predict(GBM_model, newdata = X_test, n.trees = 100)
-
-# Create a dataframe with actual values and predictions
-results <- data.frame(Actual = y_test, 
-                      RF = RF_predictions,
-                      LM = lm_predictions,
-                      SVM = svm_predictions,
-                      GBM = GBM_predictions)
-
-# Plot the actual values and predictions
-library(ggplot2)
-library(tidyr)
-
-# Plot the actual values and predictions
-ggplot(results_long, aes(x = Actual, y = Prediction)) +
-  geom_point(aes(color = Model), alpha = 0.8) +
-  scale_color_manual(values = c("black", "red", "blue", "green", "purple")) +
-  labs(title = "Actual vs. Predicted Values",
-       x = "Actual",
-       y = "Prediction") +
-  theme_minimal() +
-  theme(legend.position = "bottom")
-```
 
 7. Interpretation of Results
 
