@@ -14,7 +14,7 @@
 \contentsline {subsection}{Source of Survey Questions:}{4}{section*.15}%
 \contentsline {subsection}{Unit of Observation:}{4}{section*.16}%
 \contentsline {subsection}{Outcome Variable:}{4}{section*.17}%
-\contentsline {subsection}{Predictor Variables:}{4}{section*.18}%
+\contentsline {subsection}{Predictor Variables:}{5}{section*.18}%
 \contentsline {subsection}{Potential Issues with the Data:}{5}{section*.19}%
 \contentsline {section}{Methods and Tools Exploration}{5}{section*.20}%
 \contentsline {subsection}{Data Collection and Preprocessing}{6}{section*.21}%
@@ -27,4 +27,5 @@
 \contentsline {subsection}{Gradient Boosting Regression:}{8}{section*.28}%
 \contentsline {section}{Discussion}{10}{section*.29}%
 \contentsline {section}{References}{11}{section*.30}%
-\contentsline {section}{Appendix}{11}{section*.31}%
+\contentsline {section}{Appendix}{12}{section*.31}%
+\contentsline {subsection}{Survey form that was shared}{12}{section*.32}%
