@@ -1,24 +1,24 @@
 \contentsline {section}{Introduction:}{2}{section*.2}%
 \contentsline {section}{Significance and Problem Statement:}{2}{section*.3}%
-\contentsline {section}{Literature Review}{2}{section*.4}%
+\contentsline {section}{Literature Review}{3}{section*.4}%
 \contentsline {subsection}{Financial Behavior of Saudi College Students}{3}{section*.5}%
 \contentsline {subsection}{The Role of Financial Education}{3}{section*.6}%
 \contentsline {subsection}{Socioeconomic Background and Spending Patterns}{3}{section*.7}%
 \contentsline {subsection}{Cultural Influences on Financial Behavior}{3}{section*.8}%
 \contentsline {subsection}{Lifestyle Choices and Expenditure Patterns}{3}{section*.9}%
-\contentsline {subsection}{Cultural and Familial Influence}{3}{section*.10}%
+\contentsline {subsection}{Cultural and Familial Influence}{4}{section*.10}%
 \contentsline {subsection}{Global Perspective:}{4}{section*.11}%
 \contentsline {subsection}{Regional Variances:}{4}{section*.12}%
 \contentsline {subsection}{Research Gap:}{4}{section*.13}%
 \contentsline {section}{Data}{4}{section*.14}%
 \contentsline {subsection}{Source of Survey Questions:}{4}{section*.15}%
-\contentsline {subsection}{Unit of Observation:}{4}{section*.16}%
-\contentsline {subsection}{Outcome Variable:}{4}{section*.17}%
+\contentsline {subsection}{Unit of Observation:}{5}{section*.16}%
+\contentsline {subsection}{Outcome Variable:}{5}{section*.17}%
 \contentsline {subsection}{Predictor Variables:}{5}{section*.18}%
-\contentsline {subsection}{Potential Issues with the Data:}{5}{section*.19}%
-\contentsline {section}{Methods and Tools Exploration}{5}{section*.20}%
+\contentsline {subsection}{Potential Issues with the Data:}{6}{section*.19}%
+\contentsline {section}{Methods and Tools Exploration}{6}{section*.20}%
 \contentsline {subsection}{Data Collection and Preprocessing}{6}{section*.21}%
-\contentsline {subsection}{Feature Selection and Predictor Variables}{6}{section*.22}%
+\contentsline {subsection}{Feature Selection and Predictor Variables}{7}{section*.22}%
 \contentsline {subsection}{Justification of Tools/Methods}{7}{section*.23}%
 \contentsline {section}{Results}{8}{section*.24}%
 \contentsline {subsection}{Random Forest Regression:}{8}{section*.25}%

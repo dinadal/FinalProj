@@ -1,5 +1,6 @@
 ---
 title: "Predicting and Analyzing College Student Lifestyle and Spending Patterns in Major Cities of Saudi Arabia"
+author: "Dina Dalloul   \n Leen Almalki     \n         Reem Alsharabi "
 output:
   pdf_document:
     toc: true
